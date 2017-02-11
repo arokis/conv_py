@@ -1,0 +1,25 @@
+{
+    "version" : "0.0.1",
+    "name" : "conv.py",
+    "tmp_file" : "tmp/tmp.xml",
+    "engines" : { 
+        "saxon" : {
+            "path" : "../saxon9he.jar",
+            "call" : "java -jar"
+            },
+        "regex" : {
+            "path" : "undefined",
+            "call" : "undefined"
+        }
+    },
+    "test-steps" : [
+        {
+            "name" : "step 1",
+            "xsl" : "../test2.xsl"
+        },
+        {
+            "name" : "step 2",
+            "xsl" : "../test3.xsl"
+        }
+    ]
+}
