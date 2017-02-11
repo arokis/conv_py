@@ -1,5 +1,5 @@
 
-
+/*
 // Load the http module to create an http server.
 var http = require('http');
 
@@ -20,8 +20,10 @@ var server = http.createServer(function (request, response) {
         }
     ]
   
+    let url = 'http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw' 
+
     let spawn = require('child_process').spawn;
-    let py = spawn('python', ['conv.py']);
+    let py = spawn('python', ['conv.py', '-url:test']);
     let dataString = '';
 
 
@@ -38,8 +40,8 @@ var server = http.createServer(function (request, response) {
         response.end(dataString);
     });
 
-    py.stdin.write('http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw');
-    py.stdin.end();
+    //py.stdin.write('http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw');
+    //py.stdin.end();
   
   
 });
@@ -49,15 +51,17 @@ server.listen(8000);
 
 // Put a friendly message on the terminal
 console.log("Server running at http://127.0.0.1:8000/");
+*/
 
 
-/*
+let url = 'http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw' 
+
 let spawn = require('child_process').spawn;
-let py = spawn('python', ['conv.py']);
+let py = spawn('python', ['conv.py', url]);
 let dataString = '';
 
 
-// good example of child_process: http://www.sohamkamani.com/blog/2015/08/21/python-nodejs-comm/
+    // good example of child_process: http://www.sohamkamani.com/blog/2015/08/21/python-nodejs-comm/
 
 
 py.stdout.setEncoding('utf8').on('data', (data) => {
@@ -70,6 +74,4 @@ py.stdout.on('end', () => {
     //response.end(dataString);
 });
 
-py.stdin.write('http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw');
-py.stdin.end();
-*/
+

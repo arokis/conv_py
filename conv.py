@@ -19,8 +19,6 @@ def getXml (url):
     return data
 
 #************** global vars **************************
-#url = 'http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw'
-
 
 # load config
 config = parseJSONFile('config/config.json')
@@ -96,9 +94,14 @@ def buildURL (provider, request):
 
 ################# MAIN Flow #########################
 def main ():
-    
-    url = sys.stdin.readlines()[0]
-    #print url
+    #print(sys.argv[1])
+    if len(sys.argv) > 1:
+        url = sys.argv[1]
+    else:
+        url = 'http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw'
+
+
+    #print ('conv.py: ' + url)
         
     #print ('internal: ' + url)
 
