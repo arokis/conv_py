@@ -1,26 +1,78 @@
 import subprocess, json, os, tempfile, sys, urllib2
 
-#load config.json to configure conv.py
-with open('config/config.json') as conv_data:
-    conv_config = json.load(conv_data)
+#++++++++++++++ functions (import-ready) +++++++++++++
+def parseJSONFile (file):
+    #file = file.encode('utf-8')
+    with open(file, 'r') as data:
+        return json.load(data)
 
-"""
-#load steps.json
-with open('steps.json') as steps_data:
-    steps = json.load(steps_data)
-    steps = steps["steps"]
-"""
 
-#xml = 'test_xml.xml'
-url = 'http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw'
-xml_file = conv_config["tmp_file"]
-saxon_path = conv_config["engines"]["saxon"]["path"]
-steps = conv_config["test-steps"]
+def createTempFile (tmp_file, content):
+    file = open(tmp_file,"w+") 
+    file.write(content) 
+    file.close()
 
-def getXml (xml):
-    response = urllib2.urlopen(xml)
-    xml_data = response.read()
-    return xml_data
+
+def getXml (url):
+    response = urllib2.urlopen(url)
+    data = response.read()
+    return data
+
+#************** global vars **************************
+#url = 'http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw'
+
+
+# load config
+config = parseJSONFile('config/config.json')
+#print(config)
+
+# load default-scenarios from config
+def_scenarios = parseJSONFile(config['default-scenarios'])
+#print (def_scenarios)
+
+# load convflow from config
+convflow = parseJSONFile(config['default-convflow'])
+#print (convflow)
+
+# set temp-file from config
+xml_file = config["tmp-file"]
+    
+# set the saxon path from config.json
+saxon_path = config["engines"]["saxon"]["path"]
+
+
+
+#~~~~~~~~~~~~~~~~ business logic ~~~~~~~~~~~~~~~~~~~~~
+
+def convert (xml_data, scenarios, data):
+    scenario_index = []
+    scenario_obj = {}
+    steps = data['steps']
+    
+    for scenario in scenarios:
+        scenario_index.append(scenario['scenario'])
+        scenario_obj[scenario['scenario']] = scenario['script']
+             
+    #print (scenario_index)
+    #print (scenario_obj)
+
+    createTempFile(xml_file, xml_data)
+    
+    # run the convflow
+    for i in steps:
+        step = i['scenario']
+        
+        if step in scenario_index:
+            #print (step + " on " + xml_file + " via " + scenario_obj[step] + " with engine: " + saxon_path)
+            saxon(xml_file, scenario_obj[step])
+
+    # when conversion is finished read the last conversion output from file and remove it
+    with open(xml_file, 'r') as out:
+        output = out.read()
+        os.remove(xml_file)
+        print output    
+        
+
 
 """
 # not functional yet
@@ -29,50 +81,31 @@ def readJson():
     return json.loads(steps[0])
 """
 
-def createTempFile (tmp_file, content):
-    file = open(tmp_file,"w+") 
-    file.write(content) 
-    file.close()
 
-def convert(steps, xml):
-    # build conversion workflow
-    for step in steps:
-        xml = xml
-        saxon(saxon_path, step, xml)
-
-    # when conversion is finished read the last conversion output from file and remove it
-    with open(xml_file, 'r') as out:
-        output = out.read()
-        os.remove(xml_file)
-        return output
-
-def saxon(path, step, xml) :
-    xsl = step["xsl"]
-    inp = xml
-    #print(inp)
-    output = subprocess.check_output("java -jar " + path + " -s:" + inp + " -xsl:" + xsl, shell=True)
+def saxon(xml, xsl) :
+    script = "-xsl:" + xsl
+    source = "-s:" + xml
+    cmd_call = (config["engines"]["saxon"]["language"], config["engines"]["saxon"]["path"], source, script)
+    
+    output = subprocess.check_output(" ".join(cmd_call), shell=True)
     createTempFile(xml_file, output)
 
-# workflow when converting an online resource from vmr
-def convertUrlResource ():
-    xml_data = getXml(url)
-    createTempFile(xml_file, xml_data)
-    response = convert(steps, xml_file)
-    print(response)
+def buildURL (provider, request):
+    return 0
 
 
+################# MAIN Flow #########################
 def main ():
     
-    #print(conv_config)
-    #print(saxon_path)
-    #print(xml_file)
-    #for step in steps:
-    #    print step["name"] 
+    url = sys.stdin.readlines()[0]
+    #print url
+        
+    #print ('internal: ' + url)
 
-    
-    convertUrlResource()
-    
-
+    xml_data = getXml(url)
+    convert(xml_data, def_scenarios, convflow)
+   
+   
 
 if __name__ == '__main__':
     main()

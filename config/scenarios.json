@@ -1,0 +1,23 @@
+[
+    {
+        "scenario"  :   "cs:nlp",
+        "desc"      :   "Conversion from VMR to CopticScriptorium NLP",
+        "type"      :   "xslt",
+        "engine"    :   "saxon",
+        "script"    :   "xslt/cs_nlp.xsl"    
+    },
+    {
+        "scenario"  :   "cs:plain-text",
+        "desc"      :   "Conversion from VMR to Plain-Text",
+        "type"      :   "xslt",
+        "engine"    :   "saxon",
+        "script"    :   "xslt/strip_space.xsl"    
+    },
+    {
+        "scenario"  :   "strip-space",
+        "desc"      :   "Strip-Space everywhere",
+        "type"      :   "xslt",
+        "engine"    :   "saxon",
+        "script"    :   "xslt/strip_space.xsl"    
+    }
+]

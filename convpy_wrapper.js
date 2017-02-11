@@ -1,5 +1,5 @@
 
-/*
+
 // Load the http module to create an http server.
 var http = require('http');
 
@@ -21,7 +21,7 @@ var server = http.createServer(function (request, response) {
     ]
   
     let spawn = require('child_process').spawn;
-    let py = spawn('python', ['sax.py']);
+    let py = spawn('python', ['conv.py']);
     let dataString = '';
 
 
@@ -38,7 +38,7 @@ var server = http.createServer(function (request, response) {
         response.end(dataString);
     });
 
-    py.stdin.write(JSON.stringify(json_stdin));
+    py.stdin.write('http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw');
     py.stdin.end();
   
   
@@ -49,25 +49,9 @@ server.listen(8000);
 
 // Put a friendly message on the terminal
 console.log("Server running at http://127.0.0.1:8000/");
-*/
+
 
 /*
-// Not functional yet
-let jdata = {
-    "url" : "http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw",
-    "engine": "saxon",
-    "steps" : [
-        {
-            "name" : "step 1",
-            "xsl" : "test2.xsl"
-        },
-        {
-            "name" : "step 2",
-            "xsl" : "test2.xsl"
-        }]
-    }
-*/
-
 let spawn = require('child_process').spawn;
 let py = spawn('python', ['conv.py']);
 let dataString = '';
@@ -86,5 +70,6 @@ py.stdout.on('end', () => {
     //response.end(dataString);
 });
 
-//py.stdin.write(JSON.stringify(jdata));
-//py.stdin.end();
+py.stdin.write('http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw');
+py.stdin.end();
+*/

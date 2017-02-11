@@ -1,25 +1,18 @@
 {
-    "version" : "0.0.1",
-    "name" : "conv.py",
-    "tmp_file" : "tmp/tmp.xml",
-    "engines" : { 
+    "version"   : "0.0.1",
+    "main"  : "python conv.py",
+    "log"   : "log/process.log",   
+    "tmp-file"  : "tmp/tmp.xml",
+    "default-scenarios" : "config/scenarios.json",
+    "engines"   : { 
         "saxon" : {
-            "path" : "../saxon9he.jar",
-            "call" : "java -jar"
+            "path"  : "engines/saxon9he.jar",
+            "language"  : "java -jar"
             },
         "regex" : {
-            "path" : "undefined",
-            "call" : "undefined"
+            "path"  : "undefined",
+            "language"  : "undefined"
         }
     },
-    "test-steps" : [
-        {
-            "name" : "step 1",
-            "xsl" : "../test2.xsl"
-        },
-        {
-            "name" : "step 2",
-            "xsl" : "../test3.xsl"
-        }
-    ]
+    "default-convflow"  : "convflows/vmr2cs-nlp.json"
 }
