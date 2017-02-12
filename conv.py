@@ -20,24 +20,32 @@ def getXml (url):
 
 #************** global vars **************************
 
+conv_py_home = os.path.dirname(os.path.abspath( __file__ ))
+
 # load config
-config = parseJSONFile('config/config.json')
+config_path = os.path.join(conv_py_home, 'config/config.json')
+config = parseJSONFile(config_path)
 #print(config)
 
 # load engines from config
 default_engines = config['conversion']
 
 # load default-scenarios from config
-def_scenarios = parseJSONFile(config['default-scenarios'])
-#print (def_scenarios)
+def_scenarios_path = os.path.join(conv_py_home, config['default-scenarios'])
+def_scenarios = parseJSONFile(def_scenarios_path)
+#print (def_scenarios_path)
 
 # load convflow from config
-def_convflow = parseJSONFile(config['default-convflow'])
+def_convflow_path = os.path.join(conv_py_home, config['default-convflow'])
+def_convflow = parseJSONFile(def_convflow_path)
 #print (convflow)
+#print(def_convflow_path)
 
 # set temp-file from config
-xml_file = config["tmp-file"]
-    
+xml_file_path = os.path.join(conv_py_home, config["tmp-file"])
+#xml_file = config["tmp-file"]
+#print(xml_file_path)
+
 # set the saxon path from config.json
 #saxon_path = config["engines"]["saxon"]["path"]
 
@@ -115,25 +123,23 @@ def main ():
     else:
         url = 'http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw'
 
-
-    #print ('conv.py: ' + url)
-        
-    #print ('internal: ' + url)
+    
 
     xml_data = getXml(url)
-    createTempFile(xml_file, xml_data)
+    createTempFile(xml_file_path, xml_data)
     
     for scenario in mergeScenarios(def_convflow):
         scenario_type = scenario['conv-type']
-        scenario_script = scenario['script']
+        scenario_script = os.path.join(conv_py_home, scenario['script'])
         conversion = {}
 
         if scenario_type in default_engines:
             conversion = default_engines[scenario_type]
+            conversion['engine'] = os.path.join(conv_py_home, default_engines[scenario_type]['engine'])
             conversion['script'] = scenario_script
         
         elif scenario.get('engine') and scenario.get('language'):
-            conversion['engine'] = scenario['engine']
+            conversion['engine'] = os.path.join(conv_py_home, scenario['engine'])
             conversion['language'] = scenario['language']
             conversion['script'] = scenario_script
 
@@ -147,6 +153,7 @@ def main ():
             #print('[CONVPY:ERROR] No engine or language defined on ' + scenario_script)
             conversion = False
         
+        #print conversion
 
         call = False
 
@@ -155,23 +162,23 @@ def main ():
             if conversion['engine'] != False:
                 if conversion['name'] == 'saxon-xslt':
                     script = "-xsl:" + conversion['script']
-                    source = "-s:" + xml_file
+                    source = "-s:" + xml_file_path
                     call = (conversion['language'], conversion['engine'], script, source)
 
                 elif conversion['name'] == 'saxon-xquery':
                     script = "-xquery:" + conversion['script']
-                    source = "-s:" + xml_file
+                    source = "-s:" + xml_file_path
                     call = (conversion['language'], conversion['engine'], script, source)
             else:
-                call = (conversion['language'], conversion['script'], xml_file)
+                call = (conversion['language'], conversion['script'], xml_file_path)
         
         #print(" ".join(call))
         output = subprocess.check_output(" ".join(call), shell=True)
-        createTempFile(xml_file, output)
+        createTempFile(xml_file_path, output)
 
-    with open(xml_file, 'r') as out:
+    with open(xml_file_path, 'r') as out:
         output = out.read()
-        os.remove(xml_file)
+        os.remove(xml_file_path)
         print output
     
     
