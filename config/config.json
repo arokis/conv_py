@@ -4,15 +4,17 @@
     "log"   : "log/process.log",   
     "tmp-file"  : "tmp/tmp.xml",
     "default-scenarios" : "config/scenarios.json",
-    "engines"   : { 
-        "saxon" : {
-            "path"  : "engines/saxon9he.jar",
+    "conversion"   : { 
+        "xslt" : {
+            "name"  : "saxon-xslt",
+            "engine"  : "engines/saxon9he.jar",
             "language"  : "java -jar"
             },
-        "regex" : {
-            "path"  : "undefined",
-            "language"  : "undefined"
-        }
+        "xquery" : {
+            "name"  : "saxon-xquery",
+            "engine"  : "undefined",
+            "language"  : "java -jar"
+            }
     },
     "default-convflow"  : "convflows/vmr2cs-nlp.json"
 }

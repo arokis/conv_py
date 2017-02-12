@@ -4,6 +4,7 @@
         "base-uri" : "http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/",
         "docID" : "?docID",
         "pageID" : "&pageID",
-        "suffixe" : "&joinParts=true&format=teiraw"
+        "suffixe" : "&joinParts=true&format=teiraw",
+        "test" : "http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw"
     }
 ]

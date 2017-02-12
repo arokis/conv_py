@@ -11,12 +11,5 @@
         },
         {
             "scenario"  :   "strip-space"
-        },
-        {
-            "scenario"  :   "cs:post-processing",
-            "desc"      :   "RegEx Postprocessing to clean up the data",
-            "conv-type" :   "regex",
-            "language"  :   "python",
-            "script"    :   "regex/cs_post.py"
         }]
 }
