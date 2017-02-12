@@ -130,10 +130,12 @@ def main ():
             if step['name'] == 'saxon-xslt':
                 saxon = Xslt(step, xml_file_path)
                 saxon.run()
+                del saxon
                 #print(saxon.call())
         else:
             conversion = Conversion(step, xml_file_path)
             conversion.run()
+            del conversion
             #print(conversion.call())   
             
     # well ... fire output and remove tmp-data
