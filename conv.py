@@ -13,7 +13,7 @@ def createTempFile (tmp_file, content):
     file.close()
 
 
-def reguest (url):
+def request (url):
     response = urllib2.urlopen(url)
     data = response.read()
     return data
@@ -85,19 +85,13 @@ def eval (scenario):
         conversion = False
     
     return conversion
-    
 
-"""
-# not functional yet
-def readJson():
-    steps = sys.stdin.readlines()
-    return json.loads(steps[0])
-"""
 
 def open_xml (f):
     with open(f, 'r') as out:
         output = out.read()
     return output
+
 
 class Conversion (object):
     def __init__(self, obj, source):
@@ -134,6 +128,13 @@ class Conversion (object):
         self.createXML(output)
         
 
+"""
+# not functional yet
+def readJson():
+    steps = sys.stdin.readlines()
+    return json.loads(steps[0])
+"""
+
 ################# MAIN Flow #########################
 def main ():
     
@@ -143,16 +144,16 @@ def main ():
         url = 'http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw'
 
 
-    #xml_data = request(url)
-    xml_data = open_xml('data/test_xml.xml')
+    xml_data = request(url)
+    #xml_data = open_xml('data/test_xml.xml')
     createTempFile(xml_file_path, xml_data)
     
 
     conversion_steps = scenarios(def_convflow)
 
     for scenario in conversion_steps:
-        conv = eval(scenario) 
-        conversion = Conversion(conv, xml_file_path)
+        step = eval(scenario) 
+        conversion = Conversion(step, xml_file_path)
         conversion.run()
 
     
