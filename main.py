@@ -105,9 +105,12 @@ def main ():
 
     
     for scenario in conversion_steps:
-        step = eval(scenario)     
+        print scenario
+        if scenario['type'] == 'xslt' and not scenario.get('engine'):
+            print True
+        #step = eval(scenario)     
         #print step
-        
+        """
         if step['engine'] != False:
             if step['type'] == 'xslt':
                 saxon = convpy.Xslt(step, xml_file_path)
@@ -122,7 +125,7 @@ def main ():
     
     # well ... fire output and remove tmp-data
     inform(xml_file_path, False)
-
+    """
 
 if __name__ == '__main__':
     main()
