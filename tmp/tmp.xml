@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title type="document" n="MONB.FA">MONB.FA</title>
+            </titleStmt>
+            <publicationStmt>
+                <publisher>
+                    <name type="org">The Institut für neutestamentliche Textforschung</name>
+                </publisher>
+                <availability>
+                    <p>(C) 2016 Akademie der Wissenschaften zu Göttingen<br/>Digitale Gesamtedition
+                        und Übersetzung des koptisch-sahidischen Alten Testaments</p>
+                    <p>This work is licensed under a <a rel="license" target="_blank"
+                            href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">Creative
+                            Commons Attribution-ShareAlike 3.0 Unported License<br/><span
+                                style="float:right;"><img alt="Creative Commons License"
+                                    style="border-width:0"
+                                    src="http://i.creativecommons.org/l/by-sa/3.0/80x15.png"
+                                /></span></a></p>
+                </availability>
+            </publicationStmt>
+            <sourceDesc>
+                <msDesc>
+                    <msIdentifier>
+                        <country>France</country>
+                        <settlement>Paris</settlement>
+                        <repository>Bibliothèque Nationale</repository>
+                        <idno>Copte 130(5)</idno>
+                    </msIdentifier>
+                </msDesc>
+            </sourceDesc>
+            <sourceDesc>
+                <msDesc>
+                    <msIdentifier>
+                        <country>France</country>
+                        <settlement>Paris</settlement>
+                        <repository>Bibliothèque Nationale</repository>
+                        <idno>Copte 131(1)</idno>
+                    </msIdentifier>
+                </msDesc>
+            </sourceDesc>
+            <sourceDesc>
+                <msDesc>
+                    <msIdentifier>
+                        <country>France</country>
+                        <settlement>Paris</settlement>
+                        <repository>Bibliothèque Nationale</repository>
+                        <idno>Copte 131(6)</idno>
+                    </msIdentifier>
+                </msDesc>
+            </sourceDesc>
+            <sourceDesc>
+                <msDesc>
+                    <msIdentifier>
+                        <country>United Kingdom</country>
+                        <settlement>London</settlement>
+                        <repository>British Library</repository>
+                        <idno>Or 8811</idno>
+                    </msIdentifier>
+                </msDesc>
+            </sourceDesc>
+            <sourceDesc>
+                <msDesc>
+                    <msIdentifier>
+                        <country>United Kingdom</country>
+                        <settlement>London</settlement>
+                        <repository>British Library</repository>
+                        <idno>Or 3581A</idno>
+                    </msIdentifier>
+                </msDesc>
+            </sourceDesc>
+            <sourceDesc>
+                <msDesc>
+                    <msIdentifier>
+                        <country>United Kingdom</country>
+                        <settlement>Manchester</settlement>
+                        <repository>John Rylands University Library of Manchester</repository>
+                        <idno>no. 65</idno>
+                    </msIdentifier>
+                </msDesc>
+            </sourceDesc>
+            <sourceDesc>
+                <msDesc>
+                    <msIdentifier>
+                        <country>Italy</country>
+                        <settlement>Neapel</settlement>
+                        <repository>Biblioteca Nazionale </repository>
+                        <idno>Cass.I.B.10.fasc.419</idno>
+                    </msIdentifier>
+                </msDesc>
+            </sourceDesc>
+            <sourceDesc>
+                <msDesc>
+                    <msIdentifier>
+                        <country>Austria</country>
+                        <settlement>Wien</settlement>
+                        <repository>Österreichische Nationalbibliothek</repository>
+                        <idno>K 9299</idno>
+                    </msIdentifier>
+                </msDesc>
+            </sourceDesc>
+            <sourceDesc>
+                <msDesc>
+                    <msIdentifier>
+                        <country>Austria</country>
+                        <settlement>Wien</settlement>
+                        <repository>Österreichische Nationalbibliothek</repository>
+                        <idno>K 9300</idno>
+                    </msIdentifier>
+                </msDesc>
+            </sourceDesc>
+            <sourceDesc>
+                <msDesc>
+                    <msIdentifier>
+                        <country>Austria</country>
+                        <settlement>Wien</settlement>
+                        <repository>Österreichische Nationalbibliothek</repository>
+                        <idno>K 9301</idno>
+                    </msIdentifier>
+                </msDesc>
+            </sourceDesc>
+        </fileDesc>
+        <profileDesc>
+            <langUsage>
+                <language ident="sa"/>
+            </langUsage>
+            <handNotes>
+                <handNote>
+                    <listWit>
+                        <witness xml:id="firsthand"/>
+                    </listWit>
+                </handNote>
+            </handNotes>
+        </profileDesc>
+    </teiHeader>
+    <text xml:lang="sa">
+        <body>
+            <pb n="29" type="folio"/>
+            <cb n="1"/>
+            <lb/>
+            <w>⸓Ⲛⲣⲙⲙⲁⲟ</w>
+
+            <w>ⲛⲟⲩⲙⲛ︦ⲧ<lb break="no"/>ϩⲙϩⲁⲗ</w>
+            <w>ⲛⲅⲛⲏ<lb break="no"/>ⲥⲓⲟⲥ</w>
+            <w>ⲉϩⲟⲩⲛ</w>
+            <w>ⲉⲛⲉⲩ<lb break="no"/>ϫⲓⲥⲟⲟⲩⲉ</w>
+            <w>ⲕⲁⲧⲁⲥⲁ<lb break="no"/>ⲣⲝ·</w>
+            <w>ⲛϩⲟⲩⲟ</w>
+            <w>ⲇⲉ</w>
+            <lb/>
+            <w>ⲉϩⲟⲩⲛ</w>
+            <w>ⲉⲛⲉⲛⲧⲟ<lb break="no"/>ⲗⲏ</w>
+            <w>ⲙⲡⲉⲛϫⲟⲉⲓⲥ</w>
+            <lb/>
+            <w>ⲧⲏⲣⲛ</w>
+            <w>ϩⲓⲟⲩ<lb break="no"/>ⲥⲟⲡ·</w>
+            <lb/>
+            <w>Ⲁⲛⲟⲛ</w>
+            <w>ⲛⲟⲩⲏⲏⲃ</w>
+            <lb/>
+            <w>ⲉⲛⲛⲁϯⲉⲟⲟⲩ</w>
+            <w>ⲛ̄<lb break="no"/></w>
+            <lb/>
+            <w>ⲛⲁⲛ</w>
+            <w>ⲙⲡⲟⲩⲏ<lb break="no"/>ⲏⲃ</w>
+            <w>ϣⲁⲉⲛⲉϩ</w>
+            <lb/>
+            <w>ⲕⲁⲧⲁⲧⲇⲁⲝⲓⲥ</w>
+            <lb/>
+            <w>ⲙ̇ⲙⲉⲗⲭⲓⲥⲉⲇⲉⲕ</w>
+            <lb/>
+            <w>ϩⲙⲡⲧⲣⲉⲛ<lb break="no"/>ⲧⲃⲃⲟⲛ·</w>
+            <w>ⲕⲁⲧⲁ<lb break="no"/>ⲑⲉ</w>
+            <w>ⲉⲧⲥⲏϩ</w>
+            <lb/>
+            <w>ϫⲉⲛⲟⲩⲏⲏⲃ</w>
+            <lb/>
+            <w>ⲉⲧϩⲏⲛ</w>
+            <w>ⲉϩⲟⲩⲛ</w>
+            <lb/>
+            <w>ⲉⲡⲛⲟⲩⲧⲉ</w>
+            <w>ⲙⲁ<lb break="no"/>ⲣⲟⲩⲧⲃⲃⲟⲟⲩ</w>
+            <lb/>
+
+            <w>ⲡϣ<unclear reason="faded ink">ⲓ</unclear>ⲃⲉ</w>
+            <lb/>
+            <w>ⲙⲡⲇⲓⲁⲃ<unclear>ⲟ</unclear><supplied>ⲗⲟⲥ</supplied></w>
+            <lb/>
+            <w>ⲙⲛⲛⲉϥⲇⲁ<unclear reason="damage to page">ⲓⲙ</unclear>ⲱⲛ</w>
+            <lb/>
+            <w>ⲁⲩⲱ</w>
+            <w>ⲓ̈ⲟⲩⲇⲁⲥ</w>
+            <lb/>
+            <w>ⲙⲛⲛⲣⲉϥⲣⲛⲟⲃⲉ</w>
+            <lb/>
+            <w>ⲧⲏⲣⲟⲩ</w>
+            <w>ⲉⲧⲛⲁ<lb break="no"/>ⲙⲟⲩ</w>
+            <w>ⲛϩⲣⲁⲓ̈</w>
+            <w>ϩⲛ<lb break="no"/>ⲛⲉⲩⲛⲟⲃⲉ</w>
+            <w>ⲉⲙ<lb break="no"/><unclear>ⲡ</unclear>ⲟⲩⲙⲉⲧⲁⲛⲟⲉⲓ̄</w>
+            <cb n="2"/>
+            <lb/>
+            <w>
+                <supplied>ⲉⲛⲥⲉϣⲟⲃⲉ</supplied>
+            </w>
+            <lb/>
+            <w>ⲁⲛ</w>
+            <w>
+                <supplied>ⲉⲛⲉⲩⲉⲣⲏⲩ</supplied>
+            </w>
+            <lb/>
+            <w>ⲛϭⲓ<supplied>ⲛ̄ⲣⲉϥⲣ̄ⲛⲟⲃⲉ</supplied></w>
+            <lb/>
+            <w>ⲉⲡⲇⲓ<unclear>ⲁ</unclear><supplied>ⲃⲟⲗⲟⲥ</supplied></w>
+            <lb/>
+
+            <w>ϩⲓⲧⲙ̄<lb break="no"/><supplied>ⲡⲟⲩⲉϩⲥⲁ</supplied>ϩⲛⲉ</w>
+            <w>ⲙ̄<lb break="no"/><supplied>ⲡⲛⲟⲩⲧⲉ</supplied></w>
+            <w>ⲛⲅ̄<lb break="no"/><supplied source="transcriber" reason="lacuna">ⲛⲁⲩ</supplied></w>
+            <w><supplied source="transcriber" reason="lacuna"
+                    >ϫⲉⲉⲣⲉ</supplied><unclear>ⲡ</unclear>ⲉⲓ<unclear reason="damage to page"
+                    >ⲛ</unclear>ⲉ</w>
+            <lb/>
+            <w>
+                <supplied>ⲙⲡⲉⲩⲕⲁⲡⲛⲟⲥ</supplied>
+            </w>
+            <lb/>
+            <w>
+                <supplied source="transcriber" reason="lacuna">ⲁⲩⲱ</supplied>
+            </w>
+            <w><supplied source="transcriber" reason="lacuna"
+                >ⲡⲉⲩⲣ</supplied><unclear>ⲱ</unclear>ⲕϩ</w>
+            <lb/>
+            <w><supplied>ⲉϥ</supplied><unclear>ϣ</unclear>ⲟⲃ<unclear reason="damage to page"
+                    >ⲉ</unclear></w>
+            <w><unclear reason="damage to page">ⲉ</unclear>ⲛⲉⲩⲉ<lb break="no"/><supplied
+                    source="transcriber" reason="lacuna">ⲣⲏⲩ</supplied></w>
+            <w><supplied source="transcriber" reason="lacuna">ϩ</supplied>ⲛⲟⲩ·</w>
+            <space unit="char" extent="3"/>
+            <w>ⲁⲛ<lb break="no"/><supplied>ⲥⲁⲃⲉⲉ</supplied>ⲩⲉ</w>
+            <w>ⲅⲁⲣ</w>
+            <w>ⲟⲩⲱ<lb break="no"/><supplied>ⲉⲩ</supplied><unclear>ⲛ</unclear>ⲟⲉⲓ·</w>
+            <space unit="char" extent="5"/>
+            <w>ⲁⲩⲱ</w>
+            <w>ⲛ̄<lb break="no"/></w>
+            <cb n="2"/>
+            <lb/>
+            <w><supplied>ⲥⲉ</supplied>ⲣⲭ<lb/>ⲣⲉⲓⲁ</w>
+            <w>ⲁⲛ</w>
+            <w>ⲛ̄<lb break="no"/>ⲟⲩϩⲙ̄ⲡⲉⲓⲡⲁⲣⲁ<lb break="no"/>ⲇⲓⲅⲙⲁ</w>
+            <space unit="char" extent="3"/>
+            <w>ϫⲉ<pc>ⲧⲁ</pc>ⲓ̈</w>
+            <note xml:id="BKV-AP127-2">sehen</note>
+            <note type="local" xml:id="BKV-AP127-3">test</note>
+            <hi rend="displaced-below">drunter</hi>
+            <hi rend="displaced-above">drüber</hi>
+            <hi rend="overline">stup</hi>
+            <w><hi rend="overline">stup</hi></w>
+            <hi rend="other">ⲛ</hi>
+
+            <hi rend="other">asasas</hi>
+
+            <hi rend="other">
+                ag jasg
+                <hi>sdsds</hi>
+                sdsd
+                <h>wewe</h>
+            </hi>
+
+            <!-- Zu finden mit: 
+            
+            //hi[ child::node()[ name() = parent::node()/name() ]] [ count(self::node()/child::node()[ normalize-space() ]) = 1 ]
+            
+            -->
+
+
+
+            <hi rend="other">
+                <hi>y</hi>
+            </hi>
+
+            <hi rend="other2"><hi rend="b">a</hi></hi>
+
+            <hi rend="other">
+                <hi rend="test">ashgjghg</hi>
+            </hi>
+
+            <hi rend="overline">
+                <hi rend="blub">
+                    <hi rend="other">ashgjghg</hi>
+                </hi>
+            </hi>
+
+            <hi rend="rubric">
+                <hi rend="overline"> asas 
+                    <hi rend="test2 cap">ash<pc>g</pc> jg hg·</hi>
+                </hi>
+            </hi>
+
+
+            <hi rend="rubric">
+                s
+                <as>efr</as>
+                dsd
+                <hi rend="cap" height="4"
+                    >rubr<hi>ic</hi>c<s>ssd</s>ap</hi>
+            </hi>
+            
+            <div type="chapter" n="BK123"> first shit <div> Some more shit </div>
+            </div>
+            <supplied>ⲉⲛⲥⲉ<lb/>ϣⲟⲃⲉ</supplied>
+            <pc>&#x387;</pc>
+        </body>
+    </text>
+</TEI>

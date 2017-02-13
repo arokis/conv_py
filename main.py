@@ -1,12 +1,8 @@
 import json, os, sys, urllib2
-from conv import Conversion, Xslt
+import convpy
+
 
 #++++++++++++++ functions (import-ready) +++++++++++++
-
-def parseJSONFile (file):
-    #file = file.encode('utf-8')
-    with open(file, 'r') as data:
-        return json.load(data)
 
 
 def createTempFile (tmp_file, content):
@@ -21,33 +17,34 @@ def request (url):
     return data
 
 
-#************** global vars **************************
+
+
+
+#************** configure convpy instance **************************
 
 # conv.py is living here
-conv_py_home = os.path.dirname(os.path.abspath( __file__ ))
+conv_py_home = convpy.home
+#print(conv_py_home)
 
-# load config
-config_path = os.path.join(conv_py_home, 'config/config.json')
-config = parseJSONFile(config_path)
+# load configuration
+config = convpy.config
 
-# load engines from config
-default_engines = config['conversion']
+# set default scenarios as given in scenarios.json
+def_scenarios = convpy.scenarios
 
-# load default-scenarios from config
-def_scenarios_path = os.path.join(conv_py_home, config['default-scenarios'])
-def_scenarios = parseJSONFile(def_scenarios_path)
+# set default conversion flow as given in config.json (default: vmr2nlp)
+def_convflow = convpy.convflow
 
-# load convflow from config
-def_convflow_path = os.path.join(conv_py_home, config['default-convflow'])
-def_convflow = parseJSONFile(def_convflow_path)
+# set default engines as given in config.json (default: xslt, xquery, other)
+default_engines = convpy.engines
 
-# set temp-file from config
-xml_file_path = os.path.join(conv_py_home, config["tmp-file"])
+# set the temporary xml-file-path to store the data as given in config.json (default: tmp/tmp.xml)
+xml_file_path = convpy.tmpXML
 
 
 
 #~~~~~~~~~~~~~~~~ business logic ~~~~~~~~~~~~~~~~~~~~~
-
+"""
 def scenarios (convflow):
     result = []
     scenario_index = [i for i in def_scenarios]
@@ -60,7 +57,7 @@ def scenarios (convflow):
             result.append(step)
     #print result
     return result
-
+"""
 def eval (scenario):
     scenario_type = scenario['conv-type']
     scenario_script = os.path.join(conv_py_home, scenario['script'])
@@ -94,11 +91,12 @@ def open_xml (f):
         output = out.read()
     return output
 
-def return_and_cleanup (xml):
+def inform(xml, clean):
     with open(xml, 'r') as out:
         output = out.read()
+    if clean == True:
         os.remove(xml)
-        print output
+    print output
 """
 # not functional yet
 def readJson():
@@ -116,30 +114,36 @@ def main ():
 
     
     # Get the data 
-    xml_data = request(url)
-    #xml_data = open_xml('data/test_xml.xml')
+    #xml_data = request(url)
+    xml_data = open_xml('data/test_xml.xml')
     createTempFile(xml_file_path, xml_data)
     
     # sort the conversion steps
-    conversion_steps = scenarios(def_convflow)
+    conversion_steps = convpy.workflow(def_convflow, def_scenarios)
+    #print (def_scenarios)
+    #print (def_convflow)
+    #print (conversion_steps)
 
+    
+
+   
     # process the steps
     for scenario in conversion_steps:
         step = eval(scenario)         
         if step['engine'] != False:
             if step['name'] == 'saxon-xslt':
-                saxon = Xslt(step, xml_file_path)
-                saxon.run()
+                saxon = convpy.Xslt(step, xml_file_path)
+                saxon.speak()
                 del saxon
                 #print(saxon.call())
         else:
-            conversion = Conversion(step, xml_file_path)
-            conversion.run()
+            conversion = convpy.Conversion(step, xml_file_path)
+            conversion.speak()
             del conversion
             #print(conversion.call())   
             
     # well ... fire output and remove tmp-data
-    return_and_cleanup(xml_file_path)
+    #inform(xml_file_path, False)
    
 
 if __name__ == '__main__':
