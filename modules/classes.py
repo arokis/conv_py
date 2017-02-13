@@ -7,7 +7,10 @@ class Conversion (object):
         #self.script = obj['script']
         self.script = os.path.abspath(obj['script'])
         self.language = obj['language']
-        self.engine = os.path.abspath(obj['engine'])
+        self.engine = False
+        if obj['engine'] != False:
+            self.engine = os.path.abspath(obj['engine'])
+            
         self.name = obj['name']
         self.source = os.path.abspath(source)
     

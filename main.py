@@ -133,17 +133,17 @@ def main ():
         if step['engine'] != False:
             if step['name'] == 'saxon-xslt':
                 saxon = convpy.Xslt(step, xml_file_path)
-                saxon.speak()
+                saxon.run()
                 del saxon
                 #print(saxon.call())
         else:
             conversion = convpy.Conversion(step, xml_file_path)
-            conversion.speak()
+            conversion.run()
             del conversion
             #print(conversion.call())   
             
     # well ... fire output and remove tmp-data
-    #inform(xml_file_path, False)
+    inform(xml_file_path, False)
    
 
 if __name__ == '__main__':
