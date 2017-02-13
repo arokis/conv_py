@@ -25,10 +25,10 @@ def workflow (convflow, scenarios):
     scenario_index = [i for i in scenarios]
     
     for step in convflow['steps']:
-        scenario_name = step['scenario'] 
-        if scenario_name in scenario_index:
-            result.append(scenarios[scenario_name]) 
-        else: 
+        if step.get('scenario'):
+            scenarios[step['scenario']]['name'] = step['scenario']
+            result.append(scenarios[step['scenario']])
+        else:
             result.append(step)
     #print result
     return result

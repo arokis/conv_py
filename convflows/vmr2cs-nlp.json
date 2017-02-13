@@ -7,16 +7,16 @@
     },
     "steps" : [
         {
-            "scenario"  :   "cs:nlp"
+            "scenario"  : "cs:nlp"
         },
         {
-            "scenario"  :   "strip-space"
+            "scenario"  : "strip-space"
         },
         {
-            "scenario"  :   "cs:post-processing",
-            "desc"      :   "RegEx Postprocessing to clean up the data",
-            "conv-type" :   "regex",
-            "language"  :   "python",
-            "script"    :   "regex/cs_post.py"
+            "name"  : "cs:post-processing",
+            "desc"  : "RegEx Postprocessing to clean up the data",
+            "type"  : "regex",
+            "language"  : "python",
+            "script"    : "regex/cs_post.py"
         }]
 }

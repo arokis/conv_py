@@ -44,47 +44,26 @@ xml_file_path = convpy.tmpXML
 
 
 #~~~~~~~~~~~~~~~~ business logic ~~~~~~~~~~~~~~~~~~~~~
-"""
-def scenarios (convflow):
-    result = []
-    scenario_index = [i for i in def_scenarios]
-    
-    for step in convflow['steps']:
-        scenario_name = step['scenario'] 
-        if scenario_name in scenario_index:
-            result.append(def_scenarios[scenario_name]) 
-        else: 
-            result.append(step)
-    #print result
-    return result
-"""
+
 def eval (scenario):
-    scenario_type = scenario['conv-type']
-    scenario_script = os.path.join(conv_py_home, scenario['script'])
+    scenario_type = scenario['type']
+    scenario['script'] = os.path.join(conv_py_home, scenario['script'])
     conversion = {}
-
-    if scenario_type in default_engines:
-        conversion = default_engines[scenario_type]
-        conversion['engine'] = os.path.join(conv_py_home, default_engines[scenario_type]['engine'])
-        conversion['script'] = scenario_script
+    #print scenario
     
+    if scenario_type in default_engines:
+        #conversion = default_engines[scenario_type]
+        scenario['engine'] = os.path.join(conv_py_home, default_engines[scenario_type]['engine'])
+        scenario['language'] = default_engines[scenario_type]['language']
     elif scenario.get('engine') and scenario.get('language'):
-        conversion['engine'] = os.path.join(conv_py_home, scenario['engine'])
-        conversion['language'] = scenario['language']
-        conversion['script'] = scenario_script
-
+        scenario['engine'] = os.path.join(conv_py_home, scenario['engine'])
     elif not scenario.get('engine') and scenario.get('language'):
-        conversion['language'] = scenario['language']
-        conversion['script'] = scenario_script
-        conversion['name'] = scenario_type
-        conversion['engine'] = False
-        
+        scenario['engine'] = False
     else:
         #print('[CONVPY:ERROR] No engine or language defined on ' + scenario_script)
-        conversion = False
+        scenario = False
+    return scenario
     
-    return conversion
-
 
 def open_xml (f):
     with open(f, 'r') as out:
@@ -125,13 +104,12 @@ def main ():
     #print (conversion_steps)
 
     
-
-   
-    # process the steps
     for scenario in conversion_steps:
-        step = eval(scenario)         
+        step = eval(scenario)     
+        #print step
+        
         if step['engine'] != False:
-            if step['name'] == 'saxon-xslt':
+            if step['type'] == 'xslt':
                 saxon = convpy.Xslt(step, xml_file_path)
                 saxon.run()
                 del saxon
@@ -141,10 +119,10 @@ def main ():
             conversion.run()
             del conversion
             #print(conversion.call())   
-            
+    
     # well ... fire output and remove tmp-data
     inform(xml_file_path, False)
-   
+
 
 if __name__ == '__main__':
     main()
