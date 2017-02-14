@@ -36,6 +36,7 @@ def eval (scenario):
         #conversion = default_engines[scenario_type]
         scenario['engine'] = os.path.abspath(default_engines[scenario_type]['engine'])
         scenario['language'] = default_engines[scenario_type]['language']
+        scenario['conversion'] = default_engines[scenario_type]
     elif scenario.get('engine') and scenario.get('language'):
         scenario['engine'] = os.path.abspath(scenario['engine'])
     elif not scenario.get('engine') and scenario.get('language'):
@@ -120,11 +121,11 @@ def main ():
     
     for scenario in conversion:
         step = eval(scenario)     
-        #print step
-        convert(step, tmpXML)   
+        print step
+        #convert(step, tmpXML)   
     
     # well ... fire output and remove tmp-data
-    inform(tmpXML, True)
+    #inform(tmpXML, True)
     
 
 if __name__ == '__main__':
