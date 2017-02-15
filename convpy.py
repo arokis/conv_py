@@ -16,7 +16,7 @@ tmpXML = modules.tmpXML
 
 def workflow (convflow):
     result = []    
-    for step in convflow['steps']:
+    for step in convflow:
         
         if step.get('scenario'):
             default_scenarios[step['scenario']]['name'] = step['scenario']
@@ -70,15 +70,43 @@ def readJson():
     return json.loads(steps[0])
 """
 
+
 ################# MAIN Flow #########################
 def main ():
     
     if len(sys.argv) > 1:
-        url = sys.argv[1]
+        data = ' '.join(sys.argv[1:])
     else:
-        url = 'http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw'
-
+        data = """{
+                    "url" : "http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw",
+                    "steps" : [
+                        {
+                            "scenario"  : "cs:nlp"
+                        },
+                        {
+                            "scenario"  : "strip-space"
+                        },
+                        {
+                            "name"  : "cs:post-processing",
+                            "desc"  : "RegEx Postprocessing to clean up the data",
+                            "type"  : "regex",
+                            "script"    : "regex/cs_post.py",
+                            "conversion": {
+                                "language"  : "python"
+                            }
+                        }]
+                    }"""
     
+    print(data)
+    print(type(data))
+    print(json.dumps(json.loads(data)))
+    print(type(json.dumps(json.loads(data))))
+    #print(json.load(json.dumps(data)))
+    #print(type(json.load(json.dumps(data))))
+    
+    
+    
+    """
     # Get the data 
     #xml_data = request(url)
     xml_data = open_xml('data/test_xml.xml')
@@ -91,30 +119,40 @@ def main ():
     
     
     # sort the conversion steps
-    defined_convflow = modules.convflow
-    conversion = workflow(defined_convflow)
-    #print conversion
-        
+    default_convflow = modules.convflow['steps']
+    print (default_convflow)
+    defined_convflow = data['steps']
+    print (defined_convflow)
 
+    
+    conversion = workflow(defined_convflow)
+    print conversion
+    """
+
+    
+    """
     for scenario in conversion:
         if scenario['conversion'].get('engine'):
             engine = scenario['conversion']['engine']
             if engine == 'saxon':
                 eng = modules.Saxon(scenario, tmpXML)
-                eng.xslt() 
+                #eng.xslt() 
+                #eng.speak()
             else:
                 eng = modules.Engine(scenario, tmpXML)
-                eng.run()
+                #eng.run()
+                #eng.speak()
         else:
             no_eng = modules.Script(scenario, tmpXML)
-            no_eng.run()
+            #no_eng.run()
+            #no_eng.speak()
         
-        #print 'Scenario: '
-        #  
+        print (scenario)
+          
    
     # well ... fire output and remove tmp-data
-    inform(tmpXML, True)
-    
+    #inform(tmpXML, True)
+    """
 
 if __name__ == '__main__':
     main()

@@ -56,8 +56,28 @@ console.log("Server running at http://127.0.0.1:8000/");
 
 let url = 'http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw' 
 
+let json_stdin = {
+                    "url" : "test",
+                    "steps" : [
+                        {
+                            "scenario"  : "cs:nlp"
+                        },
+                        {
+                            "scenario"  : "strip-space"
+                        },
+                        {
+                            "name"  : "cs:post-processing",
+                            "desc"  : "RegEx Postprocessing to clean up the data",
+                            "type"  : "regex",
+                            "script"    : "regex/cs_post.py",
+                            "conversion": {
+                                "language"  : "python"
+                            }
+                        }]
+                    }
+
 let spawn = require('child_process').spawn;
-let py = spawn('python', ['conv.py', url]);
+let py = spawn('python', ['convpy.py', json_stdin]);
 let dataString = '';
 
 
