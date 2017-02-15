@@ -81,7 +81,8 @@ def main ():
         data = """{
             "url" : "http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw",
             "steps" : [
-                {"scenario"  : "cs:nlp"},
+                {"scenario" : "cs:nlp"},
+                {"scenario" :   "strip-space"},
                 {
                     "name"  : "cs:post-processing",
                     "desc"  : "RegEx Postprocessing to clean up the data",
@@ -119,39 +120,39 @@ def main ():
     #default_convflow = modules.convflow['steps']
     #print (default_convflow)
     defined_convflow = data['steps']
-    print ('CONVFLOW: ')
-    print (defined_convflow)
+    #print ('CONVFLOW: ')
+    #print (defined_convflow)
 
     
     conversion = workflow(defined_convflow)
-    print ('WORKFLOW: ')
-    print conversion
+    #print ('WORKFLOW: ')
+    #print conversion
     
 
     
-    """
+    
     for scenario in conversion:
         if scenario['conversion'].get('engine'):
             engine = scenario['conversion']['engine']
             if engine == 'saxon':
                 eng = modules.Saxon(scenario, tmpXML)
-                #eng.xslt() 
+                eng.xslt() 
                 #eng.speak()
             else:
                 eng = modules.Engine(scenario, tmpXML)
-                #eng.run()
+                eng.run()
                 #eng.speak()
         else:
             no_eng = modules.Script(scenario, tmpXML)
-            #no_eng.run()
+            no_eng.run()
             #no_eng.speak()
         
-        print (scenario)
+        #print (scenario)
           
    
     # well ... fire output and remove tmp-data
-    #inform(tmpXML, True)
-    """
+    inform(tmpXML, False)
+    
 
 if __name__ == '__main__':
     main()
