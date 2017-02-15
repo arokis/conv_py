@@ -14,52 +14,27 @@ tmpXML = modules.tmpXML
 
 #++++++++++++++ functions (import-ready) +++++++++++++
 
-
-
 def workflow (convflow):
     result = []    
     for step in convflow['steps']:
+        
         if step.get('scenario'):
             default_scenarios[step['scenario']]['name'] = step['scenario']
-            result.append(default_scenarios[step['scenario']])
-        else:
-            result.append(step)
-    return result
-
-def eval (scenario):
-    scenario_type = scenario['type']
-    scenario['script'] = os.path.abspath(scenario['script'])
-    conversion = {}
-    #print scenario
-    
-    if scenario['type'] in [key for key in default_engines] and not scenario.get('engine'):
-        #conversion = default_engines[scenario_type]
-        scenario['engine'] = os.path.abspath(default_engines[scenario_type]['engine'])
-        scenario['language'] = default_engines[scenario_type]['language']
-        scenario['conversion'] = default_engines[scenario_type]
-    elif scenario.get('engine') and scenario.get('language'):
-        scenario['engine'] = os.path.abspath(scenario['engine'])
-    elif not scenario.get('engine') and scenario.get('language'):
-        scenario['engine'] = False
-    else:
-        #print('[CONVPY:ERROR] No engine or language defined on ' + scenario_script)
-        scenario = False
-    return scenario
-
-def convert (step, source):
-    if step['engine'] != False:
-        if step['type'] == 'xslt':
-            saxon = modules.Xslt(step, source)
-            saxon.run()
-            #print(saxon.call())
-            del saxon
+            obj = dict(default_scenarios[step['scenario']])
+            if obj['type'] in [key for key in default_engines]:
+                obj['conversion'] = default_engines[obj['type']]
+            else:
+                print ('[ERROR:workflow] conversion type not found in default engines!')
             
-    else:
-        conversion = modules.Conversion(step, source)
-        conversion.run()
-        #print(conversion.call())
-        del conversion
-        
+            #print obj
+            result.append(obj)
+        else:
+            #print step
+            result.append(step)
+
+    #print(result)
+    return result
+   
 def outputFile (content, file):
     file = open(file,"w+") 
     file.write(content) 
@@ -108,26 +83,90 @@ def main ():
     #xml_data = request(url)
     xml_data = open_xml('data/test_xml.xml')
 
+    
     if not os.path.exists(os.path.dirname(tmpXML)):
         os.makedirs(os.path.dirname(tmpXML))
         modules.createTempFile(tmpXML, xml_data)
-
+    
     
     
     # sort the conversion steps
     defined_convflow = modules.convflow
     conversion = workflow(defined_convflow)
-   
-    
+    #print conversion
+        
+
     for scenario in conversion:
-        step = eval(scenario)     
-        print step
-        #convert(step, tmpXML)   
-    
+        if scenario['conversion'].get('engine'):
+            engine = scenario['conversion']['engine']
+            if engine == 'saxon':
+                eng = modules.Saxon(scenario, tmpXML)
+                eng.xslt() 
+            else:
+                eng = modules.Engine(scenario, tmpXML)
+                eng.run()
+        else:
+            no_eng = modules.Script(scenario, tmpXML)
+            no_eng.run()
+        
+        #print 'Scenario: '
+        #  
+   
     # well ... fire output and remove tmp-data
-    #inform(tmpXML, True)
+    inform(tmpXML, True)
     
 
 if __name__ == '__main__':
     main()
 
+
+
+
+# old functions
+"""
+def workflow (convflow):
+    result = []    
+    for step in convflow['steps']:
+        if step.get('scenario'):
+            default_scenarios[step['scenario']]['name'] = step['scenario']
+            result.append(default_scenarios[step['scenario']])
+        else:
+            result.append(step)
+    return result
+"""
+"""
+def eval (scenario):
+    scenario_type = scenario['type']
+    scenario['script'] = os.path.abspath(scenario['script'])
+    conversion = {}
+    #print scenario
+    
+    if scenario['type'] in [key for key in default_engines] and not scenario.get('engine'):
+        #conversion = default_engines[scenario_type]
+        scenario['engine'] = os.path.abspath(default_engines[scenario_type]['engine'])
+        scenario['language'] = default_engines[scenario_type]['language']
+        scenario['conversion'] = default_engines[scenario_type]
+    elif scenario.get('engine') and scenario.get('language'):
+        scenario['engine'] = os.path.abspath(scenario['engine'])
+    elif not scenario.get('engine') and scenario.get('language'):
+        scenario['engine'] = False
+    else:
+        #print('[CONVPY:ERROR] No engine or language defined on ' + scenario_script)
+        scenario = False
+    return scenario
+"""
+"""
+def convert (step, source):
+    if step['engine'] != False:
+        if step['type'] == 'xslt':
+            saxon = modules.Xslt(step, source)
+            saxon.run()
+            #print(saxon.call())
+            del saxon
+            
+    else:
+        conversion = modules.Conversion(step, source)
+        conversion.run()
+        #print(conversion.call())
+        del conversion
+"""     
