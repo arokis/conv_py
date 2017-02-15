@@ -16,7 +16,9 @@
             "name"  : "cs:post-processing",
             "desc"  : "RegEx Postprocessing to clean up the data",
             "type"  : "regex",
-            "language"  : "python",
-            "script"    : "regex/cs_post.py"
+            "script"    : "regex/cs_post.py",
+            "conversion": {
+                "language"  : "python"
+            }
         }]
 }
