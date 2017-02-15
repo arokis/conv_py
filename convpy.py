@@ -76,37 +76,34 @@ def main ():
     
     if len(sys.argv) > 1:
         data = ' '.join(sys.argv[1:])
+        #{"url" : "http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw","steps" : [{"scenario"  : "cs:nlp"},{"name"  : "cs:post-processing","desc"  : "RegEx","type"  : "regex","script"    : "regex/cs_post.py","conversion": {"language"  : "python"}}]}
     else:
         data = """{
-                    "url" : "http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw",
-                    "steps" : [
-                        {
-                            "scenario"  : "cs:nlp"
-                        },
-                        {
-                            "scenario"  : "strip-space"
-                        },
-                        {
-                            "name"  : "cs:post-processing",
-                            "desc"  : "RegEx Postprocessing to clean up the data",
-                            "type"  : "regex",
-                            "script"    : "regex/cs_post.py",
-                            "conversion": {
-                                "language"  : "python"
-                            }
-                        }]
-                    }"""
+            "url" : "http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw",
+            "steps" : [
+                {"scenario"  : "cs:nlp"},
+                {
+                    "name"  : "cs:post-processing",
+                    "desc"  : "RegEx Postprocessing to clean up the data",
+                    "type"  : "regex",
+                    "script": "regex/cs_post.py",
+                    "conversion": {
+                        "language"  : "python"
+                        }
+                }
+            ]}"""
     
-    print(data)
-    print(type(data))
-    print(json.dumps(json.loads(data)))
-    print(type(json.dumps(json.loads(data))))
-    #print(json.load(json.dumps(data)))
-    #print(type(json.load(json.dumps(data))))
+    #print(data)
+    #print(type(data))
+
+    data = json.loads(data)
+    
+    #print(data)
+    #print(type(data))
     
     
     
-    """
+    
     # Get the data 
     #xml_data = request(url)
     xml_data = open_xml('data/test_xml.xml')
@@ -119,15 +116,17 @@ def main ():
     
     
     # sort the conversion steps
-    default_convflow = modules.convflow['steps']
-    print (default_convflow)
+    #default_convflow = modules.convflow['steps']
+    #print (default_convflow)
     defined_convflow = data['steps']
+    print ('CONVFLOW: ')
     print (defined_convflow)
 
     
     conversion = workflow(defined_convflow)
+    print ('WORKFLOW: ')
     print conversion
-    """
+    
 
     
     """
