@@ -1,26 +1,26 @@
 {
     "name"  : "convPY",
     "author": "arokis.u@gmail.com",
-    "version"   : "0.0.1",
-    "main"  : "python conv.py",
+    "version"   : "0.7.1",
+    "main"  : "python convpy.py",
     "log"   : "log/process.log",   
     "tmp-file"  : "tmp/tmp.xml",
     "default-scenarios" : "config/scenarios.json",
     "default-convflow"  : "convflows/vmr2cs-nlp.json",
     "conversion"   : { 
         "xslt" : {
-            "name"  : "saxon-xslt",
+            "engine"  : "saxon",
             "language"  : "java -jar",
-            "engine"  : "engines/saxon9he.jar",
+            "path"  : "engines/saxon9he.jar",
             "script-param" : "-xsl:",
             "source-param" : "-s:",
             "output-param" : "-o:"    
             },
         "xquery" : {
-            "name"  : "saxon-xquery",
-            "language"  : "java -jar",
-            "engine"  : "undefined",
-            "script-param" : "-xquery:",
+            "engine"  : "saxon",
+            "language"  : "java  net.sf.saxon.Query   [options]   -q:queryfile   [ params...] ",
+            "path"  : "undefined",
+            "script-param" : "-q:",
             "source-param" : "-s:",
             "output-param" : "-o:"
             }
