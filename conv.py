@@ -1,5 +1,4 @@
 import json, os, sys, urllib2
-#import modules
 from classes import Conversion, Call, Saxon
 import configuration
 
@@ -22,7 +21,6 @@ def convert (convflow):
     def scenarioise (scenario, defaults):
         obj = dict(defaults[scenario['scenario']])
         obj['name'] = scenario['scenario']
-        #obj[scenario['scenario']] = defaults[scenario['scenario']] 
         return obj
  
     result = []   
@@ -31,10 +29,8 @@ def convert (convflow):
     
     for step in convflow:
         if step.get('scenario'):
-            #print 'Default SCENARIO'   
             scenario = scenarioise(step, default_scenarios)
             #print scenario
-            #print scenario['type']
 
             """
             scenario_type = None
@@ -48,23 +44,17 @@ def convert (convflow):
             script = scenario['script']
 
             if scenario['type'] == 'xslt':
-                #print script
                 eng = Saxon( script )
                 eng.xslt()
-                #eng.info()
+
             elif scenario['type'] == 'xquery':
                 eng = Saxon()
                 eng.xquery(script)
         else :
-            #print 'Normal STEP'
             call = Call(step['language'],step['script'])
             call.run()
             #call.info()
             
-            #print step
-            #result.append(step)
-    #print(result)
-    #return result
 
 def get_extensions (engines):
     obj = dict()
@@ -122,21 +112,20 @@ def main ():
 
     
     
-
+    # loads the json-data 
     data = json.loads(data)
 
+    # creates all the files needed
     presets('data/test_xml.xml', tmpXML)
     
-    #print (modules.routine())
-    #print ('CONVFLOW: ')
+    # takes the conversion workflow from data
     defined_convflow = data['steps']
     #print (defined_convflow)
 
-    
-    #print ('WORKFLOW: ')
+    # runs the conversion for curren workflow
     wf = convert(defined_convflow)
 
-    
+    # puts out the result and clears temporary data
     inform(True)
 
 

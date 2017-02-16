@@ -15,8 +15,6 @@ def parse_JSON_file (file):
 
 def eval_extensions (conversions):
     obj = dict()
-    #print conversions
-    
     for conv in conversions:
         for extension in conversions[conv]['extensions']:
             obj[extension] = conv
