@@ -17,11 +17,11 @@ def regex(tmp):
    
     print(transform)
     
-    """
-    file = open("tmp/tmp.xml","w+") 
+    
+    file = open(tmp,"w+") 
     file.write(transform) 
     file.close()
-    """
+    
 
 if __name__ == '__main__':
     
