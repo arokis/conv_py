@@ -1,0 +1,18 @@
+{ 
+    "Saxon" : {
+        "xslt" : {
+            "language"  : "java -jar",
+            "path"  : "engines/saxon9he.jar",
+            "script-param" : "-xsl:",
+            "source-param" : "-s:",
+            "output-param" : "-o:" 
+        },
+        "xquery" : {
+            "language"  : "java  net.sf.saxon.Query   [options]   -q:queryfile   [ params...] ",
+            "path"  : "net.sf.saxon.Query",
+            "script-param" : "-q:",
+            "source-param" : "-s:",
+            "output-param" : "-o:"
+        }  
+    }
+}
