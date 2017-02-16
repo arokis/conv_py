@@ -5,24 +5,23 @@
     "main"  : "python convpy.py",
     "log"   : "log/process.log",   
     "tmp-file"  : "tmp/tmp.xml",
+    "default-engines"   : "config/engines.json",
     "default-scenarios" : "config/scenarios.json",
     "default-convflow"  : "convflows/vmr2cs-nlp.json",
-    "conversion"   : { 
+    "conversions"   : { 
         "xslt" : {
-            "engine"  : "saxon",
-            "language"  : "java -jar",
-            "path"  : "engines/saxon9he.jar",
-            "script-param" : "-xsl:",
-            "source-param" : "-s:",
-            "output-param" : "-o:"    
+            "extensions" : [".xsl", ".xslt"],
+            "mime-type" : "text/xsl",
+            "engine"  : {
+                "name" : "Saxon"
+                }    
             },
         "xquery" : {
-            "engine"  : "saxon",
-            "language"  : "java  net.sf.saxon.Query   [options]   -q:queryfile   [ params...] ",
-            "path"  : "undefined",
-            "script-param" : "-q:",
-            "source-param" : "-s:",
-            "output-param" : "-o:"
+            "extensions" : [ ".xq", ".xql", ".xqy", ".xquery" ],
+            "mime-type" : "application/xquery",
+            "engine"  : {
+                "name" : "Saxon"
+                }    
             }
     }
 }
