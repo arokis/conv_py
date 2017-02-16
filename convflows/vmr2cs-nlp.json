@@ -2,18 +2,16 @@
     "url" : "http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw",
     "steps" : [
         {
-            "scenario"  : "cs:nlp"
+            "scenario"  : "cs_nlp"
         },
         {
             "scenario"  : "strip-space"
         },
         {
-            "name"  : "cs:post-processing",
+            "name"  : "cs_post-processing",
             "desc"  : "RegEx Postprocessing to clean up the data",
             "type"  : "regex",
             "script"    : "regex/cs_post.py",
-            "conversion": {
-                "language"  : "python"
-            }
+            "language": "Python"
         }]
 }
