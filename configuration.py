@@ -1,5 +1,4 @@
 import subprocess, os, json
-#from modules import Xslt, Conversion, Xquery
 
 
 ##################### Functions #############################
@@ -7,19 +6,14 @@ import subprocess, os, json
 def configure (path):
     path = os.path.abspath(path)
     if os.path.isfile(path):
-        return parseJSONFile(path)
+        return parse_JSON_file(path)
 
-def parseJSONFile (file):
+def parse_JSON_file (file):
     #file = file.encode('utf-8')
     with open(file, 'r') as data:
         return json.load(data)
 
-def createTempFile (tmp_file, content):
-    file = open(tmp_file,"w+") 
-    file.write(content) 
-    file.close()
-
-def evalExtensions (conversions):
+def eval_extensions (conversions):
     obj = dict()
     #print conversions
     
@@ -46,7 +40,7 @@ convflow = configure(config['default-convflow'])
 
 # evaluate convPY's extensions supported by default
 conversions = config['conversions']
-extensions = evalExtensions(conversions)
+extensions = eval_extensions(conversions)
 
 engines = configure('config/engines.json')
 
