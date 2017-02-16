@@ -19,9 +19,17 @@ def create_file (file, content):
 def convert (convflow):
     
     def scenarioise (scenario, defaults):
-        obj = dict(defaults[scenario['scenario']])
-        obj['name'] = scenario['scenario']
-        return obj
+        try:
+            obj = dict(defaults[scenario['scenario']])
+            obj['name'] = scenario['scenario']
+            return obj
+        except KeyError:
+            print ("[convPY:ERROR] Scenario does not match! Cleaning up and aborting conversion ...")
+            dir = os.path.dirname(tmpXML)
+            os.remove(tmpXML)
+            os.rmdir(dir)
+            sys.exit(1)
+        
  
     result = []   
     extensions = configuration.extensions
@@ -30,6 +38,8 @@ def convert (convflow):
     for step in convflow:
         if step.get('scenario'):
             scenario = scenarioise(step, default_scenarios)
+                
+            
             #print scenario
 
             """
@@ -50,6 +60,9 @@ def convert (convflow):
             elif scenario['type'] == 'xquery':
                 eng = Saxon()
                 eng.xquery(script)
+            
+            else: 
+                print ("[convPY:WARNING] Scenario-Type is unknown to convPY! It won't be converted")
         else :
             call = Call(step['language'],step['script'])
             call.run()
