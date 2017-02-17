@@ -25,7 +25,7 @@ def eval_extensions (conversions):
 
 # conv.py is living here
 #home = os.path.dirname(os.path.abspath( __file__ ))
-#
+
 # load config JSON
 config_path = 'config/config.json'
 config = configure(config_path)
