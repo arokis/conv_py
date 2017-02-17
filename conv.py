@@ -1,14 +1,21 @@
-import json, os, sys, urllib2
-from classes import Conversion, Call, Saxon
-import configuration
+import json 
+import os
+import sys
+import urllib2
+import Config as Configuration
 
+from Classes import Conversion, Call, Saxon
+
+
+Config = Configuration.Config('config/config.json')
 # conv.py is living here
 #convpy_home = os.path.dirname(os.path.abspath( __file__ ))
 
 # set default scenarios as given in scenarios.json
-default_scenarios = configuration.scenarios
-
-tmpXML = configuration.tmpXML
+#default_scenarios = configuration.scenarios
+default_scenarios = Config.scenarios
+#tmpXML = configuration.tmpXML
+tmpXML = Config.tmpFile
 
 #++++++++++++++ functions +++++++++++++
 def create_file (file, content):
@@ -32,8 +39,9 @@ def convert (convflow):
         
  
     result = []   
-    extensions = configuration.extensions
+    #extensions = configuration.extensions
     #print extensions
+    extensions = Config.extensions()
     
     for step in convflow:
         if step.get('scenario'):
@@ -76,7 +84,7 @@ def get_extensions (engines):
             obj[extension] = engine
     return obj
 
-def inform(clean, xml=configuration.tmpXML):
+def inform(clean, xml=Config.tmpFile):
     #print(os.path.dirname(xml))
     #
     with open(xml, 'r') as out:
@@ -92,7 +100,7 @@ def open_xml (f):
         output = out.read()
     return output
 
-def presets(data, tmpXML=configuration.tmpXML):
+def presets(data, tmpXML=Config.tmpFile):
     if not os.path.exists(os.path.dirname(tmpXML)):
         os.makedirs(os.path.dirname(tmpXML))
         create_file(tmpXML, open_xml(data))
@@ -123,8 +131,7 @@ def main ():
                 ]}"""
     
 
-    
-    
+
     # loads the json-data 
     data = json.loads(data)
 

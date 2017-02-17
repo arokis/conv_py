@@ -1,6 +1,32 @@
-import subprocess, os, json
+import os
+import json
 
+class Config(object):
+    
+    def _readJSON (self, path):
+        path = os.path.abspath(path)
+        if os.path.isfile(path):
+            with open(path, 'r') as data:
+                return json.load(data)
+    
+    def __init__ (self, config='config/config.json', scenarios='config/scenarios.json', engines='config/engines.json'):
+        self.config = self._readJSON(config)
+        self.scenarios = self._readJSON(scenarios)
+        self.engines = self._readJSON(engines)
+        
+        self.defaultFlow = self.config['default-convflow']
+        self.conversions = self.config['conversions']
+        self.tmpFile = self.config['tmp-file']
 
+    def extensions (self):
+        ext = dict()
+        for conversion in self.conversions:
+            for extension in self.conversions[conversion]['extensions']:
+                ext[extension] = conversion
+        return ext
+    
+    
+"""
 ##################### Functions #############################
 
 def configure (path):
@@ -45,5 +71,5 @@ engines = configure('config/engines.json')
 
 # set temp-file from config
 tmpXML = os.path.abspath(config["tmp-file"])
-
+"""
 
