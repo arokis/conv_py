@@ -1,1 +1,4 @@
 .vscode/
+
+# ignoring *.pyc files
+*.pyc
