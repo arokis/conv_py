@@ -1,27 +1,17 @@
 import json 
 import os
 import sys
-import urllib2
-import Config as Configuration
+import Config
 
-from Classes import Conversion, Call, Saxon
+from functions import clean_tmp, create_file, open_file, preset, request, finish  
+from Converter import Converter, Call, Saxon
 
-
-Config = Configuration.Config('config/config.json')
-# conv.py is living here
-#convpy_home = os.path.dirname(os.path.abspath( __file__ ))
-
-# set default scenarios as given in scenarios.json
-#default_scenarios = configuration.scenarios
-default_scenarios = Config.scenarios
-#tmpXML = configuration.tmpXML
-tmpXML = Config.tmpFile
+ConvPY = Config.Config('config/config.json')
+# set default scenarios as given in scenarios.json and set temporary conversion file
+default_scenarios = ConvPY.scenarios
+tmpXML = ConvPY.tmpFile
 
 #++++++++++++++ functions +++++++++++++
-def create_file (file, content):
-    file = open(file,"w+") 
-    file.write(content) 
-    file.close()
 
 def convert (convflow):
     
@@ -41,7 +31,7 @@ def convert (convflow):
     result = []   
     #extensions = configuration.extensions
     #print extensions
-    extensions = Config.extensions()
+    extensions = ConvPY.extensions()
     
     for step in convflow:
         if step.get('scenario'):
@@ -49,7 +39,7 @@ def convert (convflow):
                 
             
             #print scenario
-
+          
             """
             scenario_type = None
             for key in scenario:
@@ -77,40 +67,10 @@ def convert (convflow):
             #call.info()
             
 
-def get_extensions (engines):
-    obj = dict()
-    for engine in engines:
-        for extension in engine['on-extensions']:
-            obj[extension] = engine
-    return obj
 
-def inform(clean, xml=Config.tmpFile):
-    #print(os.path.dirname(xml))
-    #
-    with open(xml, 'r') as out:
-        output = out.read()
-    if clean == True:
-        dir = os.path.dirname(xml)
-        os.remove(xml)
-        os.rmdir(dir)
-    print output
 
-def open_xml (f):
-    with open(f, 'r') as out:
-        output = out.read()
-    return output
 
-def presets(data, tmpXML=Config.tmpFile):
-    if not os.path.exists(os.path.dirname(tmpXML)):
-        os.makedirs(os.path.dirname(tmpXML))
-        create_file(tmpXML, open_xml(data))
-
-def request (url):
-    response = urllib2.urlopen(url)
-    data = response.read()
-    return data
-
-################# MAIN Flow #########################
+################# MAIN #################
 def main ():
     if len(sys.argv) > 1:
         data = ' '.join(sys.argv[1:])
@@ -130,23 +90,30 @@ def main ():
                     }
                 ]}"""
     
-
-
     # loads the json-data 
-    data = json.loads(data)
+    requested_scenario = json.loads(data)
 
+    
+    #print (os.path.abspath(Config.tmpFile))
+    # conv.py is living here
+    #convpy_home = os.path.dirname(os.path.abspath( __file__ ))
+
+    
+    
+    xml_data = open_file('data/test_xml.xml')
+    
     # creates all the files needed
-    presets('data/test_xml.xml', tmpXML)
+    preset(xml_data, tmpXML)
     
     # takes the conversion workflow from data
-    defined_convflow = data['steps']
+    defined_convflow = requested_scenario['steps']
     #print (defined_convflow)
 
     # runs the conversion for curren workflow
     wf = convert(defined_convflow)
 
     # puts out the result and clears temporary data
-    inform(True)
+    finish(tmpXML)
 
 
 if __name__ == '__main__':

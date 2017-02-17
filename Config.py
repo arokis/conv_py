@@ -27,18 +27,7 @@ class Config(object):
             for extension in self.conversions[conversion]['extensions']:
                 ext[extension] = conversion
         return ext
-    
-    def preset (self, data):
-        if not os.path.exists(os.path.dirname(self.tmpFile)):
-            os.makedirs(os.path.dirname(self.tmpFile))
-            create_file(self.tmpFile, data)
-    
-"""
-def presets(data, tmpXML=Config.tmpFile):
-    if not os.path.exists(os.path.dirname(tmpXML)):
-        os.makedirs(os.path.dirname(tmpXML))
-        create_file(tmpXML, open_xml(data))
-"""
+
 
     
 """
