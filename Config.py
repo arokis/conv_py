@@ -1,79 +1,60 @@
 import os
 import json
 
-from functions import create_file
+import functions
+import Converter 
 
+#home = os.path.dirname( os.path.abspath( __file__ ) )
+#default_config = os.path.join(home, 'config/config.json')
 
-class Config(object):
+class ConvPY(object):
+
+    def _homeify (self, path):
+        return os.path.join(self.home, path)
     
     def _readJSON (self, path):
-        path = os.path.abspath(path)
+        path = path
         if os.path.isfile(path):
             with open(path, 'r') as data:
                 return json.load(data)
     
-    def __init__ (self, config='config/config.json', scenarios='config/scenarios.json', engines='config/engines.json'):
-        self.config = self._readJSON(config)
-        self.scenarios = self._readJSON(scenarios)
-        self.engines = self._readJSON(engines)
-        
-        self.defaultFlow = self.config['default-convflow']
-        self.conversions = self.config['conversions']
-        self.tmpFile = self.config['tmp-file']
+    def __init__ (self, config):
+        self.home = os.path.dirname( os.path.abspath( __file__ ) )
+        self.config = self._readJSON( os.path.join(self.home, config) )
+        self.tmpFile = self._homeify(self.config['tmp-file'])
 
+
+    def configure(self):
+        self.scenarios_config = self._homeify( self.config['scenarios'] )
+        self.scenarios_path = os.path.dirname( self.scenarios_config )
+        self.scenarios = self._readJSON( self.scenarios_config )
+
+        self.engines_config = self._homeify( self.config['engines'] )
+        self.engines_path = os.path.dirname( self.engines_config )
+        self.engines = self._readJSON( self.engines_config )
+        
+        self.scripts_config = self._homeify( self.config['convscripts'] )
+        self.scripts_path = os.path.dirname( self.scripts_config )
+        self.scripts = self._readJSON( self.scripts_config )
+        
+
+    def prepare (self, data):
+        functions.preset(data, self.tmpFile)
+
+    """
     def extensions (self):
         ext = dict()
         for conversion in self.conversions:
             for extension in self.conversions[conversion]['extensions']:
                 ext[extension] = conversion
         return ext
-
-
-    
-"""
-##################### Functions #############################
-
-def configure (path):
-    path = os.path.abspath(path)
-    if os.path.isfile(path):
-        return parse_JSON_file(path)
-
-def parse_JSON_file (file):
-    #file = file.encode('utf-8')
-    with open(file, 'r') as data:
-        return json.load(data)
-
-def eval_extensions (conversions):
-    obj = dict()
-    for conv in conversions:
-        for extension in conversions[conv]['extensions']:
-            obj[extension] = conv
-    return obj
-
-
-###################### Global Variables ######################
-
-# conv.py is living here
-#home = os.path.dirname(os.path.abspath( __file__ ))
-
-# load config JSON
-config_path = 'config/config.json'
-config = configure(config_path)
-
-# load convPY's default scenarios JSON
-scenarios = configure(config['default-scenarios'])
-
-# load convPY's default convflow JSON
-convflow = configure(config['default-convflow'])
-
-# evaluate convPY's extensions supported by default
-conversions = config['conversions']
-extensions = eval_extensions(conversions)
-
-engines = configure('config/engines.json')
-
-
-# set temp-file from config
-tmpXML = os.path.abspath(config["tmp-file"])
-"""
-
+    """
+    """
+    def custom (self, config):
+        self.config = self._readJSON( config )
+        print os.path.abspath(self.config['scenarios']) 
+        self.scenarios = self._readJSON( self.config['scenarios'] )
+        self.engines = self._readJSON( self.config['engines'] )
+        self.conversions = self._readJSON( self.config['conversions'] )
+        self.tmpFile = self.config['tmp-file']
+    """
