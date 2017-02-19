@@ -3,7 +3,7 @@ import os
 import json
 
 import Config
-ConvPY = Config.Config()
+convpy = Config.ConvPY('config/config.json')
 
 class Converter (object):
     def __init__(self, script, source, output):
@@ -20,7 +20,7 @@ class Converter (object):
 
 
 class Saxon (Converter):
-    def __init__(self, script, source=ConvPY.tmpFile, output=ConvPY.tmpFile, engine=ConvPY.engines['Saxon']):
+    def __init__(self, engine, script, source=convpy.tmpFile, output=convpy.tmpFile):
         Converter.__init__(self, script, source, output)
         self.engine = engine
 
@@ -47,14 +47,14 @@ class Saxon (Converter):
 
 
 class Call (Converter):
-    def __init__(self, language, script, source=ConvPY.tmpFile, output=ConvPY.tmpFile):
+    def __init__(self, language, script, source=convpy.tmpFile, output=convpy.tmpFile):
         Converter.__init__(self, script, source, output)
         self.language = language
 
     def info (self):
         print ('I am a ' + self.language + ' Call!')
 
-    def run (self, source=ConvPY.tmpFile, output=ConvPY.tmpFile):
+    def run (self, source=convpy.tmpFile, output=convpy.tmpFile):
         call =  ( ' '.join( (self.language, self.script, self.source) ) )
         self._process(call)
 
