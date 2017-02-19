@@ -5,9 +5,9 @@
     "main"  : "python convpy.py",
     "log"   : "log/process.log",   
     "tmp-file"  : "tmp/tmp.xml",
-    "default-engines"   : "config/engines.json",
-    "default-scenarios" : "config/scenarios.json",
-    "default-convflow"  : "convflows/vmr2cs-nlp.json",
+    "engines"   : "config/engines.json",
+    "scenarios" : "scenarios/vmr2cs-nlp.json",
+    "convscripts"  : "config/scripts.json",
     "conversions"   : { 
         "xslt" : {
             "extensions" : [".xsl", ".xslt"],
