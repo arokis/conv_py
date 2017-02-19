@@ -2,6 +2,12 @@ import json
 import os
 import sys
 import urllib2
+from shutil import rmtree
+
+import Conversion
+
+from Converter import Saxon, Call
+
 
 def clean_tmp (file_path):
     """
@@ -9,8 +15,7 @@ def clean_tmp (file_path):
     * path: path of tmp-file to be deleted inkl. it's parent directory 
     """
     try:
-        os.remove(file_path)
-        os.rmdir(os.path.dirname(file_path))
+        rmtree(os.path.dirname(file_path))
     except:
         print ('[convPY:WARNING] Could not clean up tmp-file "' + path +'". Maybe you should clean it manually!')
         sys.exit(0)
@@ -32,6 +37,22 @@ def create_file (path, content, option='w+'):
         sys.exit(1)
 
 
+def convert (flow, convpy):
+    """
+    """
+    for step in flow:
+        conversion = Conversion.Conversion()
+        conversion.scenarioise(step, convpy.scripts)
+        #conversion.info()
+        
+        if conversion.type == 'xslt':
+            Saxon(convpy.engines['Saxon'], conversion.script).xslt()
+        elif conversion.type == 'xquery':
+            Saxon(convpy.engines['Saxon'], conversion.script).xquery()
+        else:
+            Call(conversion.language, conversion.script).run()
+
+
 def finish (tmp_file, output_file=False, clean=True):
     """
     convPY's result:  
@@ -49,7 +70,7 @@ def finish (tmp_file, output_file=False, clean=True):
 
 def open_file (path):
     """
-    opens files with params 
+    opens files and reads it in with params 
     * path: path of file being opened 
     """
     try:
@@ -57,7 +78,7 @@ def open_file (path):
             output = out.read()
         return output
     except:
-        print ('[convPY:ERROR] Failed in opening file "' + path +'". Exit!')
+        print ('[convPY:ERROR] Failed in reading in file "' + path +'". Exit!')
         sys.exit(1)
 
 
@@ -65,13 +86,27 @@ def preset (data, tmp_file):
     """
     starts convPY's workflow by creating the essential file-system for temporary file
     """
+
+    def create_tmp_essentials (tmp_file, data):
+        os.makedirs( os.path.dirname( tmp_file ) )
+        create_file( tmp_file, data )
+
+    tmp_file = tmp_file
+    tmp_dir = os.path.dirname( tmp_file )
     try:
-        if not os.path.exists( os.path.dirname( tmp_file ) ):
-            os.makedirs( os.path.dirname( tmp_file ) )
-            create_file( tmp_file, data )
+        if not os.path.exists( tmp_dir ):
+            create_tmp_essentials(tmp_file, data)
+        else:
+            clean_tmp(tmp_file)
+            create_tmp_essentials(tmp_file, data)
+
     except:
         print ('[convPY:ERROR] Failed in creating essential file "' + path +'". Exit!')
         sys.exit(1)
+
+
+def read_JSON_file (json_file):
+    return json.load(open_file(json_file))
 
 
 def request (url):
