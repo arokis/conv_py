@@ -1,0 +1,15 @@
+{
+    "provider" : {
+        "base-uri" : "http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/",
+        "default-doc" : "?docID=690003",
+        "default-pages" : "&pageID=0-400",
+        "suffixe" : "&joinParts=true&format=teiraw"
+    },
+    "steps" : [
+        {
+            "scenario"  :   "cs:nlp"
+        },
+        {
+            "scenario"  :   "strip-space"
+        }]
+}
