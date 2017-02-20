@@ -4,8 +4,9 @@ import sys
 import urllib2
 from shutil import rmtree
 
+# ConvPy-Module "Conversion.py"
 import Conversion
-
+# ConvPy-Module "Converter.py"
 from Converter import Saxon, Call
 
 
@@ -39,6 +40,12 @@ def create_file (path, content, option='w+'):
 
 def convert (flow, convpy):
     """
+    main conversion routine which creates Conversion-Instances and call the Converter-Instances
+
+    TO-DO:
+    - decouple Conversion from Converter
+    - "pathify" Saxon-Class (Converter.py) -> and make the Classes smooth ... they are a mess right now
+    - make Conversion-Class smooth !
     """
     for step in flow:
         conversion = Conversion.Conversion()
