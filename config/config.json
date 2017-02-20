@@ -5,9 +5,18 @@
     "main"  : "python convpy.py",
     "log"   : "log/process.log",   
     "tmp-file"  : "tmp/tmp.xml",
-    "engines"   : "config/engines.json",
-    "scenarios" : "scenarios/vmr2cs-nlp.json",
-    "convscripts"  : "config/scripts.json",
+    "engines"   : {
+        "path"  : "engines/",
+        "config": "engines.json"
+    },
+    "scenarios" : {
+        "path"  : "scenarios/",
+        "config": "vmr2cs-nlp.json"
+    },
+    "convscripts": {
+        "path"  : "convscripts/",
+        "config": "scripts.json"
+    },
     "conversions"   : { 
         "xslt" : {
             "extensions" : [".xsl", ".xslt"],
