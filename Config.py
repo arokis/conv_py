@@ -25,16 +25,16 @@ class ConvPY(object):
 
 
     def configure(self):
-        self.scenarios_config = self._homeify( self.config['scenarios'] )
-        self.scenarios_path = os.path.dirname( self.scenarios_config )
+        self.scenarios_path = self._homeify( self.config['scenarios']['path'] )
+        self.scenarios_config = os.path.join(self.scenarios_path, self.config['scenarios']['config'])
         self.scenarios = self._readJSON( self.scenarios_config )
 
-        self.engines_config = self._homeify( self.config['engines'] )
-        self.engines_path = os.path.dirname( self.engines_config )
-        self.engines = self._readJSON( self.engines_config )
-        
-        self.scripts_config = self._homeify( self.config['convscripts'] )
-        self.scripts_path = os.path.dirname( self.scripts_config )
+        self.engines_path =  self._homeify( self.config['engines']['path'] )
+        self.engines_config =  os.path.join(self.engines_path, self.config['engines']['config']) 
+        self.engines = self._readJSON(self.engines_config)
+
+        self.scripts_path = self._homeify( self.config['convscripts']['path'] )
+        self.scripts_config = os.path.join(self.scripts_path, self.config['convscripts']['config'])
         self.scripts = self._readJSON( self.scripts_config )
         
 
