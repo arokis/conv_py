@@ -2,22 +2,22 @@
     "cs_nlp" : {
         "desc"  : "Conversion from VMR to CopticScriptorium NLP",
         "type"  : "xslt",
-        "script": "convscripts/xslt/cs_nlp.xsl"
+        "script": "xslt/cs_nlp.xsl"
     },
     "cs_plain-text" : {
         "desc"  : "Conversion from VMR to Plain-Text",
         "type"  : "xslt",
-        "script": "convscripts/xslt/strip_space.xsl"
+        "script": "xslt/strip_space.xsl"
     },
     "strip-space" : {
         "desc"  : "Strips space from xml-data",
         "type"  : "xslt",
-        "script": "convscripts/xslt/strip_space.xsl"
+        "script": "xslt/strip_space.xsl"
     },
     "cs_post-processing" : {
         "desc"  : "RegEx Postprocessing to clean up the data",
         "type"  : "regex",
-        "script": "convscripts/regex/cs_post.py",
+        "script": "regex/cs_post.py",
         "language"  : "python"
     }
 }
