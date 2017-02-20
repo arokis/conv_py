@@ -33,8 +33,8 @@ class ConvPY(object):
         self.engines_config =  os.path.join(self.engines_path, self.config['engines']['config']) 
         self.engines = self._readJSON(self.engines_config)
 
-        self.scripts_path = self._homeify( self.config['convscripts']['path'] )
-        self.scripts_config = os.path.join(self.scripts_path, self.config['convscripts']['config'])
+        self.scripts_path = self._homeify( self.config['scripts']['path'] )
+        self.scripts_config = os.path.join(self.scripts_path, self.config['scripts']['config'])
         self.scripts = self._readJSON( self.scripts_config )
         
 

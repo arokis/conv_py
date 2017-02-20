@@ -13,8 +13,8 @@
         "path"  : "scenarios/",
         "config": "vmr2cs-nlp.json"
     },
-    "convscripts": {
-        "path"  : "convscripts/",
+    "scripts": {
+        "path"  : "scripts/",
         "config": "scripts.json"
     },
     "conversions"   : { 
