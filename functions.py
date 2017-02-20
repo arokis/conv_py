@@ -99,7 +99,6 @@ def preset (data, tmp_file):
         else:
             clean_tmp(tmp_file)
             create_tmp_essentials(tmp_file, data)
-
     except:
         print ('[convPY:ERROR] Failed in creating essential file "' + path +'". Exit!')
         sys.exit(1)
@@ -107,6 +106,21 @@ def preset (data, tmp_file):
 
 def read_JSON_file (json_file):
     return json.load(open_file(json_file))
+
+
+def retrieve (path):
+    """
+    input handler which loads the input data and decides if File or URL and returns the data
+    * path: file-path or url which should be read in
+    """
+    try:
+        if os.path.exists(path) and os.path.isfile(path):
+            return open_file(path)
+        elif path.startswith('http'):
+            return request(path)
+    except:
+        print ('[convPY:ERROR] Failed in reading inpu-data "' + path +'". Exit!')    
+        sys.exit(1)
 
 
 def request (url):
