@@ -17,13 +17,14 @@ convpy.configure()
 #default_scenarios = ConvPY.scenarios
 #tmpXML = ConvPY.tmpFile
 
-"""
-print convpy.config
-print convpy.home
-print convpy.scenarios
-print convpy.engines
-print convpy.scripts
-"""
+
+#print convpy.config
+#print convpy.home
+#print convpy.scenarios
+#print convpy.engines_path
+#print convpy.engines_config
+print os.path.join(convpy.home, convpy.engines['Saxon']['xslt']['path'])
+#print convpy.scripts
 
 
 
@@ -50,10 +51,11 @@ def main ():
     # loads the json-data 
     requested_scenario = json.loads(data)
 
-      
-    
-    xml_data = functions.open_file('data/test_xml.xml')
-    
+    f = 'data/test_xml.xml'
+    url = requested_scenario['url']
+
+    #xml_data = functions.open_file('data/test_xml.xml')
+    xml_data = functions.retrieve(url)
     
     
     # creates all the files needed
@@ -71,7 +73,7 @@ def main ():
 
 
     # puts out the result and clears temporary data
-    functions.finish(convpy.tmpFile, convpy.tmpFile, True)
+    #functions.finish(convpy.tmpFile, convpy.tmpFile, True)
     
 
 if __name__ == '__main__':
