@@ -16,6 +16,11 @@ import conversion
 import converter 
 
 
+__author__ = "Uwe Sikora"
+__email__ = "arokis.u@googlemail.com"
+__date__ = "2017-02-12"
+
+
 #home = os.path.dirname( os.path.abspath( __file__ ) )
 #default_config = os.path.join(home, 'config/config.json')
 
@@ -73,13 +78,13 @@ class ConvPY(object):
             if conv.type == 'xslt':
                 language = self.engines['Saxon']['xslt']['language']
                 engine = os.path.join(self.home, self.engines['Saxon']['xslt']['path'])
-                converter.Saxon(language, engine).xslt(conv.script)
+                converter.Saxon(language, engine).xslt(conv.script, self.tmpFile, self.tmpFile)
             elif conv.type == 'xquery':
                 language = self.engines['Saxon']['xquery']['language']
                 engine = os.path.join(self.home, self.engines['Saxon']['xquery']['path'])
-                converter.Saxon(language, engine).xquery()
+                converter.Saxon(language, engine).xquery(conv.script, self.tmpFile, self.tmpFile)
             else:
-                converter.Call(conv.language).run(conv.script)
+                converter.Call(conv.language).run(conv.script, self.tmpFile)
 
 
     def finish (self, clean=False, output_file=False):

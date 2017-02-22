@@ -9,6 +9,11 @@ import conversion
 import convpy as convPY
 
 
+__author__ = "Uwe Sikora"
+__email__ = "arokis.u@googlemail.com"
+__date__ = "2017-02-12"
+
+
 # start convPY-Instance and configure session
 convpy = convPY.ConvPY('config/config.json')
 convpy.configure()

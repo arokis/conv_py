@@ -11,14 +11,11 @@ import subprocess
 import os
 import json
 
-import convpy as convPY
-
 
 __author__ = "Uwe Sikora"
 __email__ = "arokis.u@googlemail.com"
 __date__ = "2017-02-12"
 
-convpy = convPY.ConvPY('config/config.json')
 
 class Converter (object):
     def __init__(self, call):
@@ -44,7 +41,7 @@ class Saxon (Converter):
         print ('SAXON: via ' + self.call + ' using ' + self.engine_path + ' with CALL:')
         print ' '.join((self.engine_path, self.call))
 
-    def xslt (self, script, source=convpy.tmpFile, output=convpy.tmpFile, params=False):
+    def xslt (self, script, source, output, params=False):
         self.script = ''.join(('-xsl:', script))
         self.process.append(self.script)
         
@@ -59,7 +56,7 @@ class Saxon (Converter):
         self._process(' '.join(self.process))
         #print ' '.join(self.process)
 
-    def xquery (self, script, source=convpy.tmpFile, output=convpy.tmpFile, params=False):
+    def xquery (self, script, source, output, params=False):
         self.script = ''.join(('-xq:', script))
         self.process.append(self.script)
         
@@ -82,14 +79,14 @@ class Call (Converter):
     def info (self):
         print ('I am a ' + self.process[0] + ' Call!')
 
-    def run (self, script, source=convpy.tmpFile, output=convpy.tmpFile):
+    def run (self, script, source, output=False):
         self.script = os.path.abspath(script)
         self.process.append(self.script)
 
         self.source = os.path.abspath(source)
         self.process.append(self.source)
 
-        self.output = os.path.abspath(output)
+        #self.output = os.path.abspath(output)
         #call =  ( ' '.join( (self.call, self.script, self.source) ) )
         #subprocess.check_output(call, shell=True)
         self._process(' '.join(self.process))
