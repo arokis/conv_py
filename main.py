@@ -9,13 +9,9 @@ import conversion
 import convpy as convPY
 
 
-
+# start convPY-Instance and configure session
 convpy = convPY.ConvPY('config/config.json')
 convpy.configure()
-
-# set default scenarios as given in scenarios.json and set temporary conversion file
-#default_scenarios = ConvPY.scenarios
-#tmpXML = ConvPY.tmpFile
 
 
 #print convpy.config
@@ -56,20 +52,15 @@ def main ():
     
     f = 'data/test_xml.xml'
     url = requested_scenario['url']
-
-    #xml_data = functions.open_file('data/test_xml.xml')
-    #xml_data = functions.retrieve(url)
     
     
     # creates all the files needed
     convpy.prepare(url)
-    
-    
+     
 
     # takes the conversion workflow from data
     defined_convflow = requested_scenario['steps']
     #print (defined_convflow)
-
 
 
     convpy.convert(defined_convflow)
