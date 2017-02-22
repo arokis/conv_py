@@ -15,5 +15,5 @@ setup(
     # keywords
     # packages=find_packages(exclude=[]),
     install_requires=[],
-    # pip install -e .[demonstrator,vis,evaluation]
+    # pip install -e .[]
     )
