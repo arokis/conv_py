@@ -1,6 +1,16 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+"""
+main.py
+*******
+
+One possiblem main.py. There may be more to serve specific puposes like CMD-focused or std.in-focused or whatever
+
+TO-DO:
+* make the data input straight -> make it a function!
+"""
+
 import json 
 import sys
 
