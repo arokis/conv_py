@@ -9,7 +9,8 @@ import functions
 
 class Conversion (object):
 
-    def __init__(self):
+    def __init__(self, convpy):
+        self.convpy = convpy
         self.name = False
         self.type = False
         self.desc = False
@@ -24,16 +25,16 @@ class Conversion (object):
         print self.converter
     
     
-    def scenarioise (self, conversion, scripts):
+    def scenarioise (self, conversion):
         #self.path = os.path.dirname( scripts_config )
         #print scripts_path
         
         if conversion.get('scenario'):
             #print ('SCENARIO!')
             self.name = conversion['scenario']
-            self.type = scripts[self.name]['type']
-            self.desc = scripts[self.name]['desc']
-            self.script = scripts[self.name]['script']
+            self.type = self.convpy.scripts[self.name]['type']
+            self.desc = self.convpy.scripts[self.name]['desc']
+            self.script = os.path.join(self.convpy.scripts_path, self.convpy.scripts[self.name]['script'])
         else:
             #print ('USERDEFINED!')
             self.name = conversion['name']
