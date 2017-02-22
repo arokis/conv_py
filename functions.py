@@ -1,13 +1,17 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+"""
+functions.py
+*************
+Defines the base-functions like open or reading files etc.
+"""
+
 import json 
 import os
 import sys
 import urllib2
 from shutil import rmtree
-
-# ConvPy-Module "Conversion.py"
-import Conversion
-# ConvPy-Module "Converter.py"
-from Converter import Saxon, Call
 
 
 __author__ = "Uwe Sikora"
@@ -45,60 +49,6 @@ def create_file (path, content, option='w+'):
     except:
         print ('[convPY:ERROR] Failed while creating File "' + path +'". Exit!')
         sys.exit(1)
-
-
-def convert (flow, convpy):
-    """
-    main conversion routine which creates Conversion-Instances and call the Converter-Instances
-
-    ARGS:
-    * flow: the givern conversion-workflow which should to be done
-    * convpy: The actual configured convPY Instance
-    
-    TO-DO:
-    - decouple Conversion from Converter
-    - "pathify" Saxon-Class (Converter.py) -> and make the Classes smooth ... they are a mess right now
-    - make Conversion-Class smooth !
-    """
-    #print os.path.join(convpy.home, convpy.engines['Saxon']['xslt']['path'])
-    for step in flow:
-        conversion = Conversion.Conversion(convpy)
-        conversion.scenarioise(step)
-        #print convpy.scripts_path
-        #conversion.info()
-        
-        if conversion.type == 'xslt':
-            language = convpy.engines['Saxon']['xslt']['language']
-            engine = os.path.join(convpy.home, convpy.engines['Saxon']['xslt']['path'])
-            Saxon(language, engine).xslt(conversion.script)
-        elif conversion.type == 'xquery':
-            language = convpy.engines['Saxon']['xquery']['language']
-            engine = os.path.join(convpy.home, convpy.engines['Saxon']['xquery']['path'])
-            Saxon(language, engine).xquery()
-        else:
-            Call(conversion.language).run(conversion.script)
-
-
-def finish (tmp_file, output_file=False, clean=True):
-    """
-    convPY's result:  
-    * return last conversion's output from tmp-file and clean-up
-    
-    ARGS:
-    * tmp_file [STRING]: The temporary files going to be cleaned up
-    * output_file [STRING]: An optional output directory
-    * clean [BOOLEAN]: If True clean up, if False don't and keep all tmp-files and directories
-
-    TO-DO:
-    * save last conversion's output from tmp-file in user-defined output-folder
-    """
-    output = open_file (tmp_file)
-    if output_file != False:
-        create_file(output_file, output)
-    print(output)
-    if clean == True:
-        clean_tmp(tmp_file)
-    sys.exit(0)
 
 
 def open_file (path):
@@ -140,19 +90,6 @@ def preset (data, tmp_file):
     except:
         print ('[convPY:ERROR] Failed in creating essential file "' + tmp_file +'". Exit!')
         sys.exit(1)
-
-
-def read_JSON_file (json_file):
-    """
-    reads a JSON File
-
-    ARGS:
-    *json_file (STR): Path to a JSON File
-
-    RETURN:
-    * content of a JSON file
-    """
-    return json.load(open_file(json_file))
 
 
 def retrieve (path):
