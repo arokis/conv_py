@@ -1,11 +1,22 @@
-# Conversion.py
-# *************
-# Defines the Conversion Class for each Step in a Conversion-Scenario
-# IN WORK !
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+"""
+Conversion.py
+*************
+Defines the Conversion Class for each Step in a Conversion-Scenario
+IN WORK !
+"""
 
 import os
 #import Config
 import functions
+
+
+__author__ = "Uwe Sikora"
+__email__ = "arokis.u@googlemail.com"
+__date__ = "2017-02-12"
+
 
 class Conversion (object):
 

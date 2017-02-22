@@ -1,16 +1,16 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 import json 
-import os
 import sys
 
-import functions
-
-import Converter 
-import Conversion
-import Config
+import converter 
+import conversion
+import convpy as convPY
 
 
 
-convpy = Config.ConvPY('config/config.json')
+convpy = convPY.ConvPY('config/config.json')
 convpy.configure()
 
 # set default scenarios as given in scenarios.json and set temporary conversion file
@@ -58,12 +58,11 @@ def main ():
     url = requested_scenario['url']
 
     #xml_data = functions.open_file('data/test_xml.xml')
-    xml_data = functions.retrieve(url)
+    #xml_data = functions.retrieve(url)
     
     
     # creates all the files needed
-    convpy.prepare(xml_data)
-   
+    convpy.prepare(url)
     
     
 
@@ -73,11 +72,11 @@ def main ():
 
 
 
-    functions.convert(defined_convflow, convpy)
+    convpy.convert(defined_convflow)
 
 
     # puts out the result and clears temporary data
-    functions.finish(convpy.tmpFile, convpy.tmpFile, True)
+    convpy.finish(True)
     
 
 if __name__ == '__main__':

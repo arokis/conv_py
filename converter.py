@@ -1,9 +1,24 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+"""
+Converter.py
+*************
+Defines the Converter-Classes of ConvPY
+"""
+
 import subprocess
 import os
 import json
 
-import Config
-convpy = Config.ConvPY('config/config.json')
+import convpy as convPY
+
+
+__author__ = "Uwe Sikora"
+__email__ = "arokis.u@googlemail.com"
+__date__ = "2017-02-12"
+
+convpy = convPY.ConvPY('config/config.json')
 
 class Converter (object):
     def __init__(self, call):
@@ -15,7 +30,7 @@ class Converter (object):
         subprocess.check_output(call, shell=True)
 
     def info (self):
-        print ('Simple Converison from ' + self.source + ' to ' + self.output)
+        print ('Simple Converison with ' + self.process)
 
 
 
