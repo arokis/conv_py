@@ -57,27 +57,23 @@ console.log("Server running at http://127.0.0.1:8000/");
 let url = 'http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw' 
 
 let json_stdin = {
-                    "url" : "test",
-                    "steps" : [
-                        {
-                            "scenario"  : "cs:nlp"
-                        },
-                        {
-                            "scenario"  : "strip-space"
-                        },
-                        {
-                            "name"  : "cs:post-processing",
-                            "desc"  : "RegEx Postprocessing to clean up the data",
-                            "type"  : "regex",
-                            "script"    : "regex/cs_post.py",
-                            "conversion": {
-                                "language"  : "python"
-                            }
-                        }]
+                "url" : "http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw",
+                "steps" : [
+                    {"scenario" : "cs_nlp"},
+                    {"scenario" :   "strip-space"},
+                    {
+                        "name"  : "cs_post-processing",
+                        "desc"  : "RegEx Postprocessing to clean up the data",
+                        "type"  : "regex",
+                        "script": "scripts/regex/cs_post.py",
+                        "language"  : "python"
                     }
+                ]}
+
+let stringJSON = JSON.stringify(json_stdin)
 
 let spawn = require('child_process').spawn;
-let py = spawn('python', ['convpy.py', json_stdin]);
+let py = spawn('python', ['conv.py', stringJSON]);
 let dataString = '';
 
 
@@ -95,3 +91,5 @@ py.stdout.on('end', () => {
 });
 
 
+//py.stdin.write(JSON.stringify(json_stdin));
+//py.stdin.end();
