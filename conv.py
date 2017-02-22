@@ -23,13 +23,14 @@ convpy.configure()
 #print convpy.scenarios
 #print convpy.engines_path
 #print convpy.engines_config
-print os.path.join(convpy.home, convpy.engines['Saxon']['xslt']['path'])
+#print os.path.join(convpy.home, convpy.engines['Saxon']['xslt']['path'])
 #print convpy.scripts
 
 
 
 ################# MAIN #################
 def main ():
+
     if len(sys.argv) > 1:
         data = ' '.join(sys.argv[1:])
         #{"url" : "http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw","steps" : [{"scenario"  : "cs:nlp"},{"name"  : "cs:post-processing","desc"  : "RegEx","type"  : "regex","script"    : "regex/cs_post.py","conversion": {"language"  : "python"}}]}
@@ -43,14 +44,16 @@ def main ():
                         "name"  : "cs_post-processing",
                         "desc"  : "RegEx Postprocessing to clean up the data",
                         "type"  : "regex",
-                        "script": "convscripts/regex/cs_post.py",
+                        "script": "scripts/regex/cs_post.py",
                         "language"  : "python"
                     }
                 ]}"""
     
+    #print (' '.join(sys.argv[1:]))
+
     # loads the json-data 
     requested_scenario = json.loads(data)
-
+    
     f = 'data/test_xml.xml'
     url = requested_scenario['url']
 
@@ -61,6 +64,7 @@ def main ():
     # creates all the files needed
     convpy.prepare(xml_data)
    
+    
     
 
     # takes the conversion workflow from data
@@ -73,7 +77,7 @@ def main ():
 
 
     # puts out the result and clears temporary data
-    #functions.finish(convpy.tmpFile, convpy.tmpFile, True)
+    functions.finish(convpy.tmpFile, convpy.tmpFile, True)
     
 
 if __name__ == '__main__':
