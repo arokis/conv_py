@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='ConvPY',
-    version='0.0.1',
+    version='0.8.1',
     description='Conversion TOOL for XML-Data',
     # url
     author="Uwe Sikora",

@@ -1,7 +1,4 @@
 {
-    "name"  : "convPY",
-    "author": "arokis.u@gmail.com",
-    "version"   : "0.7.1",
     "main"  : "python convpy.py",
     "log"   : "log/process.log",   
     "tmp-file"  : "tmp/tmp.xml",
