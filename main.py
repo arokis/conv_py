@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """
@@ -14,9 +14,7 @@ TO-DO:
 import json 
 import sys
 
-import converter 
-import conversion
-import convpy as convPY
+import convpy.conv as convPY
 
 
 __author__ = "Uwe Sikora"
@@ -70,7 +68,7 @@ def main ():
     
     
     # creates all the files needed
-    convpy.prepare(url)
+    convpy.prepare(f)
      
 
     # takes the conversion workflow from data
