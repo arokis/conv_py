@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-functions.py
+convpy/functions.py
 *************
 Defines the base-functions like open or reading files etc.
 """

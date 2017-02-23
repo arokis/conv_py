@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Conversion.py
+convpy/conversion.py
 *************
 Defines the Conversion Class for each Step in a Conversion-Scenario
 IN WORK !

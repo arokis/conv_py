@@ -1,8 +1,8 @@
-#!/usr/bin/python
+#! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """
-Converter.py
+convpy/converter.py
 *************
 Defines the Converter-Classes of ConvPY
 """

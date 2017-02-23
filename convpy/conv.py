@@ -1,8 +1,8 @@
-#!/usr/bin/python
+#! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """
-convpy.py
+convpy/conv.py
 *************
 Defines ConvPY itself as a Class and its conversion-functionalities
 """
@@ -21,9 +21,6 @@ __email__ = "arokis.u@googlemail.com"
 __date__ = "2017-02-12"
 
 
-#home = os.path.dirname( os.path.abspath( __file__ ) )
-#default_config = os.path.join(home, 'config/config.json')
-
 class ConvPY(object):
 
     def _homeify (self, path):
@@ -38,7 +35,7 @@ class ConvPY(object):
     
 
     def __init__ (self, config):
-        self.home = os.path.dirname( os.path.abspath( __file__ ) )
+        self.home = os.path.dirname(os.path.abspath( os.path.join( __file__ , os.path.pardir) ))
         self.config = self._readJSON( os.path.join(self.home, config) )
         self.tmpFile = self._homeify(self.config['tmp-file'])
 
