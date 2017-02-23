@@ -73,7 +73,7 @@ let json_stdin = {
 let stringJSON = JSON.stringify(json_stdin)
 
 let spawn = require('child_process').spawn;
-let py = spawn('python', ['conv.py', stringJSON]);
+let py = spawn('python', ['main.py', stringJSON]);
 let dataString = '';
 
 
