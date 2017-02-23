@@ -58,7 +58,7 @@ def main ():
                     }
                 ]}"""
     
-    #print (' '.join(sys.argv[1:]))
+    print (data)
 
     # loads the json-data 
     requested_scenario = json.loads(data)
