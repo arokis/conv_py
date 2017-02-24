@@ -11,7 +11,7 @@ A testing script
 import json 
 import sys
 
-import convpy.conv as convPY
+import convpy as convPY
 
 
 __date__ = "2017-02-23"

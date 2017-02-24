@@ -14,7 +14,7 @@ TO-DO:
 import json 
 import sys
 
-import convpy.conv as convPY
+import convpy as convPY
 
 
 __author__ = "Uwe Sikora"
@@ -58,7 +58,7 @@ def main ():
                     }
                 ]}"""
     
-    print (data)
+    #print (data)
 
     # loads the json-data 
     requested_scenario = json.loads(data)
