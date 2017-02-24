@@ -70,10 +70,10 @@ let json_stdin = {
                     }
                 ]}
 
-let stringJSON = JSON.stringify(json_stdin)
+let std_in = JSON.stringify(json_stdin)
 
 let spawn = require('child_process').spawn;
-let py = spawn('python', ['main.py', stringJSON]);
+let py = spawn('python', ['convpy_json.py']);
 let dataString = '';
 
 
@@ -91,5 +91,5 @@ py.stdout.on('end', () => {
 });
 
 
-//py.stdin.write(JSON.stringify(json_stdin));
-//py.stdin.end();
+py.stdin.write(std_in);
+py.stdin.end();
