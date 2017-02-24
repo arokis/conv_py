@@ -92,6 +92,11 @@ def preset (data, tmp_file):
         sys.exit(1)
 
 
+def read_JSON_file (file_path):
+    content = open_file(file_path)
+    return json.loads(content)
+
+
 def retrieve (path):
     """
     input handler which loads the input data and decides if File or URL and returns the data
@@ -105,7 +110,7 @@ def retrieve (path):
         elif os.path.exists(path) and os.path.isfile(path):
             return open_file(path)
     except:
-        print ('[convPY:ERROR] Failed in reading inpu-data "' + path +'". Exit!')    
+        print ('[convPY:ERROR] Failed in reading input-data "' + path +'". Exit!')    
         sys.exit(1)
 
 

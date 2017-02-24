@@ -25,33 +25,23 @@ class ConvPY(object):
 
     def _homeify (self, path):
         return os.path.join(self.home, path)
-    
 
-    def _readJSON (self, path):
-        path = path
-        if os.path.isfile(path):
-            with open(path, 'r') as data:
-                return json.load(data)
-    
 
     def __init__ (self, config):
         self.home = os.path.dirname(os.path.abspath( os.path.join( __file__ , os.path.pardir) ))
-        self.config = self._readJSON( os.path.join(self.home, config) )
+        self.config = functions.read_JSON_file( os.path.join(self.home, config) )
         self.tmpFile = self._homeify(self.config['tmp-file'])
+        self.output = self.config['output-dir']
 
 
     def configure(self):
-        self.scenarios_path = self._homeify( self.config['scenarios']['path'] )
-        self.scenarios_config = os.path.join(self.scenarios_path, self.config['scenarios']['config'])
-        self.scenarios = self._readJSON( self.scenarios_config )
-
         self.engines_path =  self._homeify( self.config['engines']['path'] )
         self.engines_config =  os.path.join(self.engines_path, self.config['engines']['config']) 
-        self.engines = self._readJSON(self.engines_config)
+        self.engines = functions.read_JSON_file(self.engines_config)
 
         self.scripts_path = self._homeify( self.config['scripts']['path'] )
         self.scripts_config = os.path.join(self.scripts_path, self.config['scripts']['config'])
-        self.scripts = self._readJSON( self.scripts_config )
+        self.scripts = functions.read_JSON_file( self.scripts_config )
         
 
     def convert (self, workflow):
