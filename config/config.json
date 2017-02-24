@@ -2,13 +2,10 @@
     "main"  : "python convpy.py",
     "log"   : "log/process.log",   
     "tmp-file"  : "tmp/tmp.xml",
+    "output-dir": "None",
     "engines"   : {
         "path"  : "engines/",
         "config": "engines.json"
-    },
-    "scenarios" : {
-        "path"  : "scenarios/",
-        "config": "vmr2cs-nlp.json"
     },
     "scripts": {
         "path"  : "scripts/",
