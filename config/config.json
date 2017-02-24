@@ -6,10 +6,6 @@
         "path"  : "engines/",
         "config": "engines.json"
     },
-    "scenarios" : {
-        "path"  : "scenarios/",
-        "config": "vmr2cs-nlp.json"
-    },
     "scripts": {
         "path"  : "scripts/",
         "config": "scripts.json"
