@@ -45,7 +45,7 @@ def main ():
         #{"url" : "http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw","steps" : [{"scenario"  : "cs:nlp"},{"name"  : "cs:post-processing","desc"  : "RegEx","type"  : "regex","script"    : "regex/cs_post.py","conversion": {"language"  : "python"}}]}
     else:
         data = """{
-                "url" : "http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw",
+                "source" : "http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw",
                 "steps" : [
                     {"scenario" : "cs_nlp"},
                     {"scenario" :   "strip-space"},
@@ -64,7 +64,7 @@ def main ():
     requested_scenario = json.loads(data)
     
     f = 'data/test_xml.xml'
-    url = requested_scenario['url']
+    source = requested_scenario['source']
     
     
     # creates all the files needed
