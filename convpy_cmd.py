@@ -23,14 +23,7 @@ __date__ = "2017-02-12"
 ################# MAIN #################
 def main ():
 
-    parser = argparse.ArgumentParser(prog='convpy_cmd')
-    parser.add_argument('-c', '--config', default='config/config.json', help="opens convPY with custom config")
-    parser.add_argument('-i', '--input', default='data/test_xml.xml', help='defines input directory or file')
-    parser.add_argument('-wf', '--flow', help='runs convPY on defined workflow')
-    parser.add_argument('-o', '--out', default='out/', help='defines output-directory')
-    #parser.add_argument('-iter', action='store_true', default='False', help='iterate through directory')
-    #args = parser.parse_args(['-wf', 'scenarios/vmr2cs-nlp2.json', '-i', 'http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw'])
-    args = parser.parse_args()
+    args = convPY.cmd_api(['-wf', 'scenarios/vmr2cs-nlp.json'])
 
     config = args.config
     source = args.input
@@ -41,6 +34,9 @@ def main ():
             flow = file.read()
     except TypeError:
         print ('[convPY:ERROR] Could not identify workflow! Exit!')
+        sys.exit(1)
+    except IOError:
+        print ('[convPY:ERROR] No such File "' + args.flow + '"! Exit!')
         sys.exit(1)
     
     # loads the json-data
