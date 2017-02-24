@@ -7,3 +7,5 @@ convpy/__init__.py
 
 initialises the main convPY-classes and functions
 """
+
+from conv import ConvPY
