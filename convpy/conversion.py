@@ -9,7 +9,6 @@ IN WORK !
 """
 
 import os
-#import Config
 import functions
 
 
@@ -26,6 +25,7 @@ class Conversion (object):
         self.type = False
         self.desc = False
         self.script = False 
+        self.language = False
         self.converter = False
         
     def info (self):
@@ -46,6 +46,11 @@ class Conversion (object):
             self.type = self.convpy.scripts[self.name]['type']
             self.desc = self.convpy.scripts[self.name]['desc']
             self.script = os.path.join(self.convpy.scripts_path, self.convpy.scripts[self.name]['script'])
+            try: 
+                self.language = self.convpy.scripts[self.name]['language']
+            except KeyError:
+                pass
+        
         else:
             #print ('USERDEFINED!')
             self.name = conversion['name']
