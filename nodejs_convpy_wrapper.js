@@ -57,7 +57,7 @@ console.log("Server running at http://127.0.0.1:8000/");
 let url = 'http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw' 
 
 let json_stdin = {
-                "url" : "http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw",
+                "source" : "http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw",
                 "steps" : [
                     {"scenario" : "cs_nlp"},
                     {"scenario" :   "strip-space"},
@@ -73,7 +73,7 @@ let json_stdin = {
 let std_in = JSON.stringify(json_stdin)
 
 let spawn = require('child_process').spawn;
-let py = spawn('python', ['convpy_json.py']);
+let py = spawn('python', ['convpy_json.py', '-stdin']);
 let dataString = '';
 
 
