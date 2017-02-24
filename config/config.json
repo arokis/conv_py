@@ -2,6 +2,7 @@
     "main"  : "python convpy.py",
     "log"   : "log/process.log",   
     "tmp-file"  : "tmp/tmp.xml",
+    "output-dir": "None",
     "engines"   : {
         "path"  : "engines/",
         "config": "engines.json"
