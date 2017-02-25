@@ -61,19 +61,13 @@ let json_stdin = {
                 "steps" : [
                     {"scenario" : "cs_nlp"},
                     {"scenario" :   "strip-space"},
-                    {
-                        "name"  : "cs_post-processing",
-                        "desc"  : "RegEx Postprocessing to clean up the data",
-                        "type"  : "regex",
-                        "script": "scripts/regex/cs_post.py",
-                        "language"  : "python"
-                    }
+                    {"scenario" :   "cs_post-processing"}
                 ]}
 
 let std_in = JSON.stringify(json_stdin)
 
 let spawn = require('child_process').spawn;
-let py = spawn('python', ['convpy_json.py', '-stdin']);
+let py = spawn('python', ['convpy_main.py', '-stdin']);
 let dataString = '';
 
 

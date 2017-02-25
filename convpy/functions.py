@@ -65,8 +65,8 @@ def open_file (path):
         with open(path, 'r') as out:
             output = out.read()
         return output
-    except:
-        print ('[convPY:ERROR] Failed in reading in file "' + path +'". Exit!')
+    except IOError:
+        print ('[convPY:ERROR] No such File "' + cmd_args.flow + '"! Exit!')
         sys.exit(1)
 
 

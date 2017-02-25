@@ -5,9 +5,10 @@
             "scenario"  : "cs_nlp"
         },
         {
-            "scenario"  : "strip-space"
-        },
-        {
-            "scenario"  : "cs_post-processing"
+            "name"  : "cs_post-processing",
+            "desc"  : "RegEx Postprocessing to clean up the data",
+            "type"  : "regex",
+            "script"    : "scripts/regex/cs_post.py",
+            "language": "python"
         }]
 }

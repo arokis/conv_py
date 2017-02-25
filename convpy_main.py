@@ -21,10 +21,14 @@ __date__ = "2017-02-12"
 
 ################# MAIN #################
 def main ():
+    
+    #########################
+    # ConvPYs API Interface #
+    #########################
 
+    cmd_args = convPY.cmd_api()
     #cmd_args = convPY.cmd_api(['-stdin'])
     #cmd_args = convPY.cmd_api(['-wf', 'scenarios/vmr2cs-nlp.json'])
-    cmd_args = convPY.cmd_api()
     
     config = cmd_args.config
     source = cmd_args.input
@@ -35,30 +39,24 @@ def main ():
         source = json_data['source']
         scenario = json_data['steps']
     else:
-        """
-        print('NOPE')
-        print cmd_args
-        sys.exit(1)
-        """
-        # loads the json-data
+        
         # open scenario from file
         try:
-            with open(cmd_args.flow, 'r') as file:
-                flow = file.read()
+            flow = convPY.open_file(cmd_args.flow)    
         except TypeError:
             print ('[convPY:ERROR] Could not identify workflow! Exit!')
-            sys.exit(1)
-        except IOError:
-            print ('[convPY:ERROR] No such File "' + cmd_args.flow + '"! Exit!')
             sys.exit(1)
         
         # loads the json-data
         scenario = json.loads(flow)['steps']
     
-    
-
     #print scenario
     
+
+    #########################
+    # ConvPYs Main-Workflow #
+    #########################
+
     # start convPY-Instance and configure session
     convpy = convPY.ConvPY(config)
     convpy.configure()
