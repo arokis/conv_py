@@ -58,8 +58,7 @@ def main ():
     #########################
 
     # start convPY-Instance and configure session
-    convpy = convPY.ConvPY(config)
-    convpy.configure()
+    convpy = convPY.configure(config)
     
     # prepare !    
     convpy.prepare(source)

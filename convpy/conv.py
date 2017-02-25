@@ -1,48 +1,54 @@
-#! /usr/bin/env python
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 """
 convpy/conv.py
 *************
-Defines ConvPY itself as a Class and its conversion-functionalities
+Defines configuration-functions and the Classes "Config" and "Convpy".
 """
 
+import json 
 import os
-import json
 import sys
+import urllib2
+from shutil import rmtree
 
 import functions
-import conversion
 import converter 
-
 
 __author__ = "Uwe Sikora"
 __email__ = "arokis.u@googlemail.com"
-__date__ = "2017-02-12"
+__date__ = "2017-02-25"
 
 
-class ConvPY(object):
-
-    def _homeify (self, path):
-        return os.path.join(self.home, path)
-
-
+class Config (object):
     def __init__ (self, config):
-        self.home = os.path.dirname(os.path.abspath( os.path.join( __file__ , os.path.pardir) ))
-        self.config = functions.read_JSON_file( os.path.join(self.home, config) )
-        self.tmpFile = self._homeify(self.config['tmp-file'])
-        self.output = self.config['output-dir']
+        self.path = os.path.dirname(config)
+        self.config = read_config(config)
 
 
-    def configure(self):
-        self.engines_path =  self._homeify( self.config['engines']['path'] )
-        self.engines_config =  os.path.join(self.engines_path, self.config['engines']['config']) 
-        self.engines = functions.read_JSON_file(self.engines_config)
+class Confpy (object):
+    def __init__ (self, config, engines, scripts):
+        self.main_config = config
+        self.engines = engines
+        self.scripts = scripts
+        self.tmpFile = pathify(True, config.config['tmp-file'])
+        self.output = config.config['output-dir']
 
-        self.scripts_path = self._homeify( self.config['scripts']['path'] )
-        self.scripts_config = os.path.join(self.scripts_path, self.config['scripts']['config'])
-        self.scripts = functions.read_JSON_file( self.scripts_config )
+    def prepare (self, source):
+        """
+        preparation Methode that creates the neccessary file-structure of ConvPY
+
+        ARGS:
+        * data: the givern conversion-workflow which should to be done
+        * convpy: The actual configured convPY Instance
         
+        TO-DO:
+        - "pathify" Saxon-Class (Converter.py) -> and make the Classes smooth ... they are a mess right now
+        - make Conversion-Class smooth !
+        """
+        source = functions.retrieve(source)
+        preset(source, self.tmpFile)
 
     def convert (self, workflow):
         """
@@ -57,22 +63,23 @@ class ConvPY(object):
         - make Conversion-Class smooth !
         """
         for step in workflow:
-            conv = conversion.Conversion(self)
-            conv.scenarioise(step)
-            #print convpy.scripts_path
-            #conv.info()
+                 
+            step = self.scenarioise(step)
+            #print step
             
-            if conv.type == 'xslt':
-                language = self.engines['Saxon']['xslt']['language']
-                engine = os.path.join(self.home, self.engines['Saxon']['xslt']['path'])
-                converter.Saxon(language, engine).xslt(conv.script, self.tmpFile, self.tmpFile)
-            elif conv.type == 'xquery':
+            if step['type'] == 'xslt':
+                language = self.engines.config['Saxon']['xslt']['language']
+                engine = os.path.join(self.engines.path, self.engines.config['Saxon']['xslt']['path'])
+                #print ' '.join((language, engine, step['script'], self.tmpFile, self.tmpFile))
+                converter.Saxon(language, engine).xslt(step['script'], self.tmpFile, self.tmpFile)
+            elif step['type'] == 'xquery':
                 language = self.engines['Saxon']['xquery']['language']
-                engine = os.path.join(self.home, self.engines['Saxon']['xquery']['path'])
-                converter.Saxon(language, engine).xquery(conv.script, self.tmpFile, self.tmpFile)
+                engine = os.path.join(self.engines.path, self.engines.config['Saxon']['xquery']['path'])
+                #engine = os.path.join(self.home, self.engines['Saxon']['xquery']['path'])
+                converter.Saxon(language, engine).xquery(step['script'], self.tmpFile, self.tmpFile)
             else:
-                converter.Call(conv.language).run(conv.script, self.tmpFile)
-
+                converter.Call(step['language']).run(step['script'], self.tmpFile)
+    
 
     def finish (self, clean=False, output_file=False):
         """
@@ -96,24 +103,128 @@ class ConvPY(object):
         sys.exit(0)
 
 
-    def prepare (self, data):
-        data = functions.retrieve(data)
-        functions.preset(data, self.tmpFile)
+    def scenarioise (self, scenario):
+        """
+        ...
 
+        ARGS:
+        * scenario   : ...
+
+        RETURN:
+        * {DICT}: ...
+        """
+        #print convpy.tmpFile
+        obj = {}
+        
+        if scenario.get('scenario'):
+            #print 'CONVPY SCENARIO'
+            scenario_name = scenario['scenario']
+            obj['name'] = scenario_name
+            try:
+                #print convpy.scripts.config[scenario_name]
+                obj['script'] = os.path.join(self.scripts.path, self.scripts.config[scenario_name]['script'])
+                obj['type'] = self.scripts.config[scenario_name]['type']
+                try:
+                    obj['language'] = self.scripts.config[scenario_name]['language']
+                except:
+                    obj['language'] = False   
+            except:
+                #print 'NICHT DRIN'
+                pass
+        else:
+            #print 'USER DEFINED SCENARIO'
+            obj = scenario
+        return obj
+
+
+
+def configure (config_file):
     """
-    def extensions (self):
-        ext = dict()
-        for conversion in self.conversions:
-            for extension in self.conversions[conversion]['extensions']:
-                ext[extension] = conversion
-        return ext
+    configures ConvPY with homepath and reads engines and scipts configs
+
+    ARGS:
+    * config_file: path to config.json 
+
+    RETURN:
+    {CONVPY OBJECT} that is configured with main-config, engines and scenario-scripts
     """
+    config_path = pathify(True, config_file)
+    main_config = Config(config_path)
+
+    scripts_config = pathify(True, main_config.config['scripts']['path'], main_config.config['scripts']['config'])
+    engines_config = pathify(True, main_config.config['engines']['path'], main_config.config['engines']['config'])
+    
+    scripts = Config(scripts_config)
+    engines = Config(engines_config)
+    return Confpy(main_config, engines, scripts)
+
+
+def pathify (homeify, *arg):
     """
-    def custom (self, config):
-        self.config = self._readJSON( config )
-        print os.path.abspath(self.config['scenarios']) 
-        self.scenarios = self._readJSON( self.config['scenarios'] )
-        self.engines = self._readJSON( self.config['engines'] )
-        self.conversions = self._readJSON( self.config['conversions'] )
-        self.tmpFile = self.config['tmp-file']
+    ...
+
+    ARGS:
+    * homeify   : ...
+    * *arg      : ... 
+
+    RETURN:
+    * STR: ...
     """
+    joined = ''.join(arg)
+    if homeify == True:
+        home = os.path.dirname( os.path.abspath( os.path.join( __file__ , os.path.pardir) ) )
+        #print 'homeify'
+        #print os.path.join(home, path)
+        return os.path.join(home, joined)
+    else:
+        #print 'relative'
+        #print joined
+        return os.path.abspath(joined)
+
+
+def preset (data, tmp_file):
+    """
+    starts convPY's workflow by creating the essential file-system for temporary file
+    
+    ARGS:
+    * data      : ...
+    * tmp_file  : ... 
+
+    RETURN:
+        OK      > File-structure: ...
+        Error   > Exception & exits with error-code 1
+    """
+
+    def create_tmp_essentials (tmp_file, data):
+        os.makedirs( os.path.dirname( tmp_file ) )
+        functions.create_file( tmp_file, data )
+
+    tmp_file = tmp_file
+    tmp_dir = os.path.dirname( tmp_file )
+    try:
+        if not os.path.exists( tmp_dir ):
+            create_tmp_essentials(tmp_file, data)
+        else:
+            functions.clean_tmp(tmp_file)
+            create_tmp_essentials(tmp_file, data)
+    except:
+        print ('[convPY:ERROR] Failed in creating essential file "' + tmp_file +'". Exit!')
+        sys.exit(1)
+
+
+def read_config (file_path):
+    """
+    ...
+
+    ARGS:
+    * file_path   : ...
+
+    RETURN:
+        OK      > {DICT}: ...
+        ERROR   > Exception & exits with error-code 1
+    """
+    try:
+        return functions.read_JSON_file(file_path)
+    except:
+        print ('[convPY:Error] Could not read config-file "' + file_path +'". Exit!')
+        sys.exit(1)

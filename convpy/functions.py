@@ -70,28 +70,6 @@ def open_file (path):
         sys.exit(1)
 
 
-def preset (data, tmp_file):
-    """
-    starts convPY's workflow by creating the essential file-system for temporary file
-    """
-
-    def create_tmp_essentials (tmp_file, data):
-        os.makedirs( os.path.dirname( tmp_file ) )
-        create_file( tmp_file, data )
-
-    tmp_file = tmp_file
-    tmp_dir = os.path.dirname( tmp_file )
-    try:
-        if not os.path.exists( tmp_dir ):
-            create_tmp_essentials(tmp_file, data)
-        else:
-            clean_tmp(tmp_file)
-            create_tmp_essentials(tmp_file, data)
-    except:
-        print ('[convPY:ERROR] Failed in creating essential file "' + tmp_file +'". Exit!')
-        sys.exit(1)
-
-
 def read_JSON_file (file_path):
     content = open_file(file_path)
     return json.loads(content)
@@ -128,7 +106,3 @@ def request (url):
     except:
         print ('[convPY:ERROR] Failed retrieving data from url "' + url +'" Exit!')
         sys.exit(1)
-
-
-
-    

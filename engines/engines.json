@@ -2,7 +2,7 @@
     "Saxon" : {
         "xslt" : {
             "language"  : "java -jar",
-            "path"  : "engines/saxon9he.jar",
+            "path"  : "saxon9he.jar",
             "script-param" : "-xsl:",
             "source-param" : "-s:",
             "output-param" : "-o:" 

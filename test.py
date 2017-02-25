@@ -18,7 +18,39 @@ __date__ = "2017-02-23"
 
 
 # start convPY-Instance and configure session
+"""
 convpy = convPY.ConvPY('config/config.json')
 print convpy.home
 print convpy.tmpFile
 print convpy.config
+"""
+convpy = convPY.configure('config/config.json')
+
+#print convpy.engines.path
+
+
+f = 'data/test_xml.xml'
+convpy.prepare(f)
+
+
+data = """{
+            "source" : "http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw",
+            "steps" : [
+                {"scenario" : "cs_nlp"},
+                {"scenario" :   "strip-space"},
+                {
+                    "name"  : "cs_post-processing",
+                    "desc"  : "RegEx Postprocessing to clean up the data",
+                    "type"  : "regex",
+                    "script": "scripts/regex/cs_post.py",
+                    "language"  : "python"
+                }
+            ]}"""
+
+#print (data)
+
+# loads the json-data 
+requested_scenario = json.loads(data)
+
+convpy.convert(requested_scenario['steps'])
+convpy.finish(True)
