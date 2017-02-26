@@ -29,10 +29,6 @@ convpy = convPY.configure('config/config.json')
 #print convpy.engines.path
 
 
-f = 'data/test_xml.xml'
-convpy.prepare(f)
-
-
 data = """{
             "source" : "http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw",
             "steps" : [
@@ -49,8 +45,15 @@ data = """{
 
 #print (data)
 
+
+
 # loads the json-data 
 requested_scenario = json.loads(data)
+convpy.read_scenario(requested_scenario['steps'])
+#print convpy.scenario
+f = 'data/test_xml.xml'
 
-convpy.convert(requested_scenario['steps'])
-convpy.finish(True)
+l = [f, 'data/2_test_xml.xml']
+convpy.convert(f, write_output=True)
+#convpy.convert(requested_scenario['steps'])
+#convpy.finish(True)
