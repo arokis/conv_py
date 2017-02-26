@@ -25,12 +25,13 @@ def cmd_api(args_list=False):
     RETURN:
     {ARGPARSE-OBJECT: Namespace}
     """
-    parser = argparse.ArgumentParser(prog='convpy_cmd')
-    parser.add_argument('-c', '--config', default='config/config.json', help="opens convPY with custom config")
+    parser = argparse.ArgumentParser(prog='convPY', description='conversion tool to convert xml data with different scenarios.')
+    parser.add_argument('-c', '--config', default='config/config.json', help="opens %(prog)s with custom config")
     parser.add_argument('-i', '--input', default='data/test_xml.xml', help='defines input directory or file')
-    parser.add_argument('-wf', '--flow', default='scenarios/testing.json', help='runs convPY on defined workflow')
     parser.add_argument('-o', '--out', default='out/', help='defines output-directory')
+    parser.add_argument('-wf', '--flow', default='scenarios/testing.json', help='runs %(prog)s on defined workflow')
     parser.add_argument('-stdin', action='store_true', default='False', help='sets input-mode to JSON stdin.')
+    parser.add_argument('-v','--version', action='version', version='%(prog)s 0.2')
     #args = parser.parse_args(['-wf', 'scenarios/vmr2cs-nlp2.json', '-i', 'http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw'])
     
     if args_list == False:
