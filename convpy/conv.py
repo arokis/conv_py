@@ -23,11 +23,33 @@ __date__ = "2017-02-25"
 
 class Config(object):
     """
-    Config
+    Config-Class:
+    Representing a config file and content
+
+    ARGS:
+    * config: Path to JSON config-file
     """
     def __init__(self, config):
         self.path = os.path.dirname(config)
-        self.config = read_config(config)
+        self.config = self._read(config)
+
+    def _read(self, file_path):
+        """
+        Config-Class non-public methode reading in a JSON config-file by its path
+
+        ARGS:
+        * file_path   : file path to JSON config
+
+        RETURN:
+            OK      > {DICT}: ...
+            ERROR   > Exception & exits with error-code 1
+        """
+        try:
+            return functions.read_json_file(file_path)
+        except:
+            print('[convPY:Error] Could not read config-file "' + file_path +'". Exit!')
+            sys.exit(1)
+
 
 
 class Confpy(object):
@@ -43,15 +65,33 @@ class Confpy(object):
         self.output = config.config['output-dir']
         self.scenario = False
         self.source = False
-
         self._create_tmp_dir()
 
 
     def _create_tmp_dir(self):
+        """
+        creates the temporary directory
+
+        ARGS:
+        * self: The actual configured convPY Instance
+
+        CREATES:
+        * DIRECTORY
+        """
         functions.create_dir(self.tmp_dir)
 
 
     def _create_output_file(self, content):
+        """
+        creates the output file and constructs this files name
+
+        ARGS:
+        * self: The actual configured convPY Instance
+        * content: content to write into the output-file
+
+        CREATES:
+        * FILE
+        """
         source_file = os.path.splitext(os.path.basename(self.source))
         #print source_file
         source_name = source_file[0]
@@ -63,6 +103,12 @@ class Confpy(object):
 
 
     def _clean_tmp_dir(self):
+        """
+        cleans all the temporary data incl. temporary directory
+
+        ARGS:
+        * self: The actual configured convPY Instance
+        """
         try:
             if self.tmp_dir != os.path.dirname(os.path.abspath(os.path.join(__file__, os.path.pardir))):
                 rmtree(self.tmp_dir)
@@ -72,6 +118,17 @@ class Confpy(object):
 
 
     def _work_the_flow(self, source):
+        """
+        main converison routine calling the different Converter Classes.
+        Also tracks self.source
+
+        ARGS:
+        * self: The actual configured convPY Instance
+        * source: the source being converted
+
+        CREATES:
+        * TEMPORARY FILE
+        """
         self.source = source
         self._prepare(self.source)
 
@@ -91,6 +148,18 @@ class Confpy(object):
 
 
     def _output(self, write_output=True):
+        """
+        puts out the result on stdout and as output-file if spcified
+
+        ARGS:
+        * self: The actual configured convPY Instance
+        * write_output:
+            True: output will be written to file in specified path from config.json
+            False: no output-file will be created
+
+        RETURN:
+        * STDOUT: the conversion result represented by tmp-file
+        """
         output = functions.open_file(self.tmp_file)
         print output
         if write_output and self.output != 'None':
@@ -99,16 +168,14 @@ class Confpy(object):
 
     def _prepare(self, source):
         """
-        preparation Methode that creates the neccessary file-structure of ConvPY
+        preparation Methode that creates the neccessary file-structure
 
         ARGS:
-        * data: the givern conversion-workflow which should to be done
-        * convpy: The actual configured convPY Instance
+        * self: The actual configured convPY Instance
+        * source: the source beeing converted
 
-        TO-DO:
-        -   "pathify" Saxon-Class (Converter.py) ->
-            and make the Classes smooth ... they are a mess right now
-        -   make Conversion-Class smooth !
+        CREATS:
+        * TEMPORARY FILE
         """
         source = functions.retrieve(source)
         #if os.path.exists(self.tmp_file):
@@ -122,13 +189,14 @@ class Confpy(object):
 
     def _scenarioise(self, scenario):
         """
-        ...
+        tries to synchronise a given scenario with ConvPY's scripts
 
         ARGS:
-        * scenario   : ...
+        * self: The actual configured convPY Instance
+        * scenario: scenario which is going to be synchronised
 
-        RETURN:
-        * {DICT}: ...
+        RETURNS:
+        * {DICT}: synchronised Dictionary with expanded script paths
         """
         #print convpy.tmpFile
         obj = {}
@@ -156,15 +224,12 @@ class Confpy(object):
 
     def convert(self, source, write_output=True):
         """
-        main conversion routine which creates Conversion-Instances and call the Converter-Instances
+        main conversion routine which creates Conversion-Instances, calls the Converter-Instances
+        and ends ConvPY with sys.exit('0') if everything worked well
 
         ARGS:
+        * self: The actual configured convPY Instance
         * flow: the givern conversion-workflow which should to be done
-        * convpy: The actual configured convPY Instance
-
-        TO-DO:
-        - "pathify" Saxon-Class (Converter.py) -> and make the Classes smooth ... they are a mess right now
-        - make Conversion-Class smooth !
         """
         #print type(source)
         if isinstance(source, str) or isinstance(source, unicode):
@@ -182,6 +247,17 @@ class Confpy(object):
 
 
     def read_scenario(self, scenario):
+        """
+        ConvPY's public class reading in a given scenario.
+        After synchronising the scenario it is saved as ConvPY's scenario-attribute
+
+        ARGS:
+        * self: The actual configured convPY Instance
+        * scenario: given conversion scenario
+
+        RETURN:
+        * self.scenario: the synchronised scenario for the actual ConvPY-Instance
+        """
         scenario_steps = []
         for step in scenario:
             scenario_steps.append(self._scenarioise(step))
@@ -194,7 +270,7 @@ def configure(config_file):
     configures ConvPY with homepath and reads engines and scipts configs
 
     ARGS:
-    * config_file: path to config.json 
+    * config_file: path to config.json
 
     RETURN:
     {CONVPY OBJECT} that is configured with main-config, engines and scenario-scripts
@@ -231,22 +307,3 @@ def pathify(homeify, *arg):
         #print 'relative'
         #print joined
         return os.path.abspath(joined)
-
-
-def read_config(file_path):
-    """
-    ...
-
-    ARGS:
-    * file_path   : ...
-
-    RETURN:
-        OK      > {DICT}: ...
-        ERROR   > Exception & exits with error-code 1
-    """
-    try:
-        return functions.read_JSON_file(file_path)
-    except:
-        print('[convPY:Error] Could not read config-file "' + file_path +'". Exit!')
-        sys.exit(1)
-        

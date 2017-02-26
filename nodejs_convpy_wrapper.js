@@ -60,7 +60,6 @@ let json_stdin = {
                 "source" : "http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw",
                 "steps" : [
                     {"scenario" : "cs_nlp"},
-                    {"scenario" :   "strip-space"},
                     {"scenario" :   "cs_post-processing"}
                 ]}
 

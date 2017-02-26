@@ -7,11 +7,10 @@ convpy/functions.py
 Defines the base-functions like open or reading files etc.
 """
 
-import json 
+import json
 import os
 import sys
 import urllib2
-from shutil import rmtree
 
 
 __author__ = "Uwe Sikora"
@@ -21,7 +20,7 @@ __date__ = "2017-02-12"
 
 def create_dir(path):
     """
-    creates directories 
+    creates directories
 
     ARGS:
     * path: path of directory being created
@@ -34,30 +33,30 @@ def create_dir(path):
         sys.exit(1)
 
 
-def create_file (path, content, option='w+'):
+def create_file(path, content, option='w+'):
     """
-    creates files with params 
-    
+    creates files with params
+
     ARGS:
     * path: path of file being created
     * content: content being writen in file
-    * options (optional): writing mode (no string-controll!), default: 'w+' 
+    * options (optional): writing mode (no string-controll!), default: 'w+'
     """
     try:
-        fo = open( path, option ) 
-        fo.write( content ) 
+        fo = open(path, option)
+        fo.write(content)
         fo.close()
-    except:
+    except IOError:
         print ('[convPY:ERROR] Failed while creating File "' + path +'". Exit!')
         sys.exit(1)
 
 
-def open_file (path):
+def open_file(path):
     """
-    opens files and reads it in with params 
+    opens files and reads it in with params
 
     ARGS:
-    * path: path of file being opened 
+    * path: path of file being opened
 
     RETURN:
     * content of a file or sys.exit(1)
@@ -71,15 +70,24 @@ def open_file (path):
         sys.exit(1)
 
 
-def read_JSON_file (file_path):
+def read_json_file(file_path):
+    """
+    reads JSON from a file
+
+    ARGS:
+    * file_path: JSON file which should be read in
+
+    RETURNS:
+    * {DICT}: JSON as Python Dictionary
+    """
     content = open_file(file_path)
     return json.loads(content)
 
 
-def retrieve (path):
+def retrieve(path):
     """
     input handler which loads the input data and decides if File or URL and returns the data
-    
+
     ARGS:
     * path: file-path or url which should be read in
     """
@@ -88,15 +96,15 @@ def retrieve (path):
             return request(path)
         elif os.path.exists(path) and os.path.isfile(path):
             return open_file(path)
-    except:
-        print ('[convPY:ERROR] Failed in reading input-data "' + path +'". Exit!')    
+    except IOError:
+        print ('[convPY:ERROR] Failed in reading input-data "' + path +'". Exit!')
         sys.exit(1)
 
 
-def request (url):
+def request(url):
     """
-    requests data from url 
-    
+    requests data from url
+
     ARGS:
     * url: url whose data is going do be responded (well ... when server resonds)
     """
