@@ -8,7 +8,7 @@ convpy_json.py
 handles convpy with JSON std.in
 """
 
-import json 
+import json
 import sys
 
 import convpy as convPY

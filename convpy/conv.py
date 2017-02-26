@@ -55,6 +55,12 @@ class Config(object):
 class Confpy(object):
     """
     Confpy
+    Representing a ConvPY Session aka the scenario driven Conversion you want to run :-D
+
+    ARGS:
+    * config: Path to main JSON config-file
+    * engines: path to engines JSON config-file
+    * scripts: path to scripts JSON config-file
     """
     def __init__(self, config, engines, scripts):
         self.main_config = config
@@ -64,20 +70,8 @@ class Confpy(object):
         self.tmp_dir = os.path.dirname(self.tmp_file)
         self.output = config.config['output-dir']
         self.scenario = False
-        self.source = False
-        self._create_tmp_dir()
+        self.source = ''
 
-
-    def _create_tmp_dir(self):
-        """
-        creates the temporary directory
-
-        ARGS:
-        * self: The actual configured convPY Instance
-
-        CREATES:
-        * DIRECTORY
-        """
         functions.create_dir(self.tmp_dir)
 
 
@@ -91,13 +85,26 @@ class Confpy(object):
 
         CREATES:
         * FILE
-        """
-        source_file = os.path.splitext(os.path.basename(self.source))
-        #print source_file
-        source_name = source_file[0]
-        source_extension = source_file[1]
 
-        outfile_name = ''.join((source_name, '_cpy', source_extension))
+        TO-DO:
+        * file and path handling sucks: extensions should be taken from tmp-file since thsi is
+          the file beeing copyed
+        * how to handle URL-Resources consitently?
+        """
+
+        #source = self.source
+        outfile_name = ''
+
+        if self.source.startswith('http'):
+            outfile_name = ''.join(('http_resource_cpy.xml'))
+        else:
+            source_file = os.path.splitext(os.path.basename(self.source))
+            #print source_file
+            source_name = source_file[0]
+            source_extension = source_file[1]
+
+            outfile_name = ''.join((source_name, '_cpy', source_extension))
+
         functions.create_dir(self.output)
         functions.create_file(os.path.join(self.output, outfile_name), content)
 
