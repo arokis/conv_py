@@ -237,6 +237,11 @@ class Confpy(object):
         ARGS:
         * self: The actual configured convPY Instance
         * flow: the givern conversion-workflow which should to be done
+        
+        TO-DO:
+        * Not check the type but check if source is os.path.isdir()
+          or os.path.isfile()
+        * If os.path.isdir() create list of all files in dir with absolute path
         """
         #print type(source)
         if isinstance(source, str) or isinstance(source, unicode):
