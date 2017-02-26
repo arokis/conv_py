@@ -33,7 +33,6 @@ data = """{
             "source" : "http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw",
             "steps" : [
                 {"scenario" : "cs_nlp"},
-                {"scenario" :   "strip-space"},
                 {
                     "name"  : "cs_post-processing",
                     "desc"  : "RegEx Postprocessing to clean up the data",
@@ -51,9 +50,8 @@ data = """{
 requested_scenario = json.loads(data)
 convpy.read_scenario(requested_scenario['steps'])
 #print convpy.scenario
-f = 'data/test_xml.xml'
 
+u = requested_scenario['source']
+f = 'data/test_xml.xml'
 l = [f, 'data/2_test_xml.xml']
-convpy.convert(f, write_output=True)
-#convpy.convert(requested_scenario['steps'])
-#convpy.finish(True)
+convpy.convert(u, write_output=True)
