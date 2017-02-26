@@ -7,6 +7,7 @@ convpy/conv.py
 Defines configuration-functions and the Classes "Config" and "Convpy".
 """
 
+import datetime
 import os
 import sys
 from shutil import rmtree
@@ -45,16 +46,21 @@ class Confpy(object):
 
         self._create_tmp_dir()
 
-    def _create_tmp_dir(self):
-        try:
-            #self.tmp_dir = os.path.dirname(self.tmp_file)
-            #print self.tmp_dir
-            os.makedirs(self.tmp_dir)
-        except:
-            pass
 
-    def _create_output_file(self):
-        print self.source
+    def _create_tmp_dir(self):
+        functions.create_dir(self.tmp_dir)
+
+
+    def _create_output_file(self, content):
+        source_file = os.path.splitext(os.path.basename(self.source))
+        #print source_file
+        source_name = source_file[0]
+        source_extension = source_file[1]
+
+        outfile_name = ''.join((source_name, '_cpy', source_extension))
+        functions.create_dir(self.output)
+        functions.create_file(os.path.join(self.output, outfile_name), content)
+
 
     def _clean_tmp_dir(self):
         try:
@@ -86,11 +92,11 @@ class Confpy(object):
 
     def _output(self, write_output=True):
         output = functions.open_file(self.tmp_file)
-        #print output
+        print output
         if write_output and self.output != 'None':
-            self._create_output_file()
+            self._create_output_file(output)
 
-    
+
     def _prepare(self, source):
         """
         preparation Methode that creates the neccessary file-structure of ConvPY
@@ -104,7 +110,6 @@ class Confpy(object):
             and make the Classes smooth ... they are a mess right now
         -   make Conversion-Class smooth !
         """
-        
         source = functions.retrieve(source)
         #if os.path.exists(self.tmp_file):
         #    os.remove(self.tmp_file)
@@ -149,10 +154,6 @@ class Confpy(object):
         return obj
 
 
-    
-
-
-
     def convert(self, source, write_output=True):
         """
         main conversion routine which creates Conversion-Instances and call the Converter-Instances
@@ -180,35 +181,11 @@ class Confpy(object):
         sys.exit(0)
 
 
-
-    def finish(self, clean=False, output_file=False):
-        """
-        convPY's result:
-        * return last conversion's output from tmp-file and clean-up
-
-        ARGS:
-        * tmp_file [STRING]: The temporary files going to be cleaned up
-        * output_file [STRING]: An optional output directory
-        * clean [BOOLEAN]: If True clean up, if False don't and keep all tmp-files and directories
-
-        TO-DO:
-        * save last conversion's output from tmp-file in user-defined output-folder
-        """
-        output = functions.open_file(self.tmp_file)
-        if output_file != False:
-            functions.create_file(output_file, output)
-            print(output)
-        if clean:
-            functions.clean_tmp(self.tmp_file)
-        sys.exit(0)
-
     def read_scenario(self, scenario):
         scenario_steps = []
         for step in scenario:
             scenario_steps.append(self._scenarioise(step))
         self.scenario = scenario_steps
-
-    
 
 
 
@@ -256,37 +233,6 @@ def pathify(homeify, *arg):
         return os.path.abspath(joined)
 
 
-def preset(data, tmp_file):
-    """
-    starts convPY's workflow by creating the essential file-system for temporary file
-
-    ARGS:
-    * data      : ...
-    * tmp_file  : ...
-
-    RETURN:
-        OK      > File-structure: ...
-        Error   > Exception & exits with error-code 1
-    """
-
-    def create_tmp_essentials(tmp_file, data):
-        os.makedirs( os.path.dirname( tmp_file ))
-        functions.create_file( tmp_file, data )
-
-    print 'source'
-    tmp_file = tmp_file
-    tmp_dir = os.path.dirname( tmp_file )
-    try:
-        if not os.path.exists( tmp_dir ):
-            create_tmp_essentials(tmp_file, data)
-        else:
-            functions.clean_tmp(tmp_file)
-            create_tmp_essentials(tmp_file, data)
-    except:
-        print ('[convPY:ERROR] Failed in creating essential file "' + tmp_file +'". Exit!')
-        sys.exit(1)
-
-
 def read_config(file_path):
     """
     ...
@@ -303,3 +249,4 @@ def read_config(file_path):
     except:
         print('[convPY:Error] Could not read config-file "' + file_path +'". Exit!')
         sys.exit(1)
+        

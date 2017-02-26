@@ -19,18 +19,19 @@ __email__ = "arokis.u@googlemail.com"
 __date__ = "2017-02-12"
 
 
-def clean_tmp (file_path):
+def create_dir(path):
     """
-    cleans all temporary files and folders being created during convPY working 
-    
+    creates directories 
+
     ARGS:
-    * path: path of tmp-file to be deleted inkl. it's parent directory 
+    * path: path of directory being created
     """
     try:
-        rmtree(os.path.dirname(file_path))
-    except:
-        print ('[convPY:WARNING] Could not clean up tmp-file "' + file_path +'". Maybe you should clean it manually!')
-        sys.exit(0)
+        if not os.path.exists(path):
+            os.makedirs(path)
+    except IOError:
+        print('[convPY:ERROR] Failed while creating Directory "' + path +'". Exit!')
+        sys.exit(1)
 
 
 def create_file (path, content, option='w+'):

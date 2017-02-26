@@ -61,11 +61,10 @@ def main ():
     convpy = convPY.configure(config)
     
     # prepare !    
-    convpy.prepare(source)
+    convpy.read_scenario(scenario)
     # convert !
-    convpy.convert(scenario)
+    convpy.convert(source, False)
     # ... and finish !
-    convpy.finish(True)
     
 
 if __name__ == '__main__':
