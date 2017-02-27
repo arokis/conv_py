@@ -5,6 +5,12 @@
 convpy/converter.py
 *************
 Defines the Converter-Classes of ConvPY
+
+TO-DO:
+* configure() methode which configures Converter from engine-config.
+  this method sould be optional when working with convPY so that one can 
+  import the Saxon-Class as standalone unconfigured
+
 """
 
 import subprocess
@@ -82,10 +88,11 @@ class Call (Converter):
     def run (self, script, source, output=False):
         self.script = os.path.abspath(script)
         self.process.append(self.script)
-
-        self.source = os.path.abspath(source)
+        #print self.process
+        self.source = source
         self.process.append(self.source)
-
+        #print self.process
+        self.process.append(output)
         #self.output = os.path.abspath(output)
         #call =  ( ' '.join( (self.call, self.script, self.source) ) )
         #subprocess.check_output(call, shell=True)
