@@ -115,3 +115,24 @@ def request(url):
     except:
         print ('[convPY:ERROR] Failed retrieving data from url "' + url +'" Exit!')
         sys.exit(1)
+
+
+def walk_dir(path):
+    """
+    walks given directory and filters files
+
+    ARGS:
+    * path: path of directory being walked
+
+    TO-DO:
+    * ignores should be configurable in config.json
+    """
+    ignore_starts_with = ('_', '.')
+    ignore_ends_with = ('~', '.swp')
+    
+    dir_files = [os.path.join(root,f) 
+    for root,dirs,files in os.walk(path) 
+    for f in files 
+    if not f.endswith(ignore_ends_with) and not f.startswith(ignore_starts_with)]
+    
+    return dir_files
