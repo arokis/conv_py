@@ -69,6 +69,7 @@ class Confpy(object):
         self.tmp_file = pathify(True, 'tmp/tmp.xml')
         self.tmp_dir = os.path.dirname(self.tmp_file)
         self.output = config.config['output-dir']
+        self.output_file = ''
         self.scenario = False
         self.source = ''
 
@@ -135,23 +136,42 @@ class Confpy(object):
 
         CREATES:
         * TEMPORARY FILE
+
+        TO-DO:
+        * Function not smooth! It's crap ... need to make the workflow better
+        * Its better to create the first tmp-file in _prepare() from the tmp-dir-path
+        * Maybe better to create a tmp-dictionary to ceep track of counter and file
         """
+        
         self.source = source
         self._prepare(self.source)
-
+        self.output_file = self.tmp_file
+        
+    
+        tmp_nr = 0
         for step in self.scenario:
+            outfile_name = str(tmp_nr)
+            outfile_extension = step['output']
+            output_file = os.path.join(self.tmp_dir, ''.join((outfile_name, outfile_extension))) 
+            
             if step['type'] == 'xslt':
                 language = self.engines.config['Saxon']['xslt']['language']
                 engine = os.path.join(self.engines.path, self.engines.config['Saxon']['xslt']['path'])
                 #print ' '.join((language, engine, step['script'], self.tmpFile, self.tmpFile))
-                converter.Saxon(language, engine).xslt(step['script'], self.tmp_file, self.tmp_file)
+                converter.Saxon(language, engine).xslt(step['script'], self.output_file, output_file)
             elif step['type'] == 'xquery':
                 language = self.engines['Saxon']['xquery']['language']
                 engine = os.path.join(self.engines.path, self.engines.config['Saxon']['xquery']['path'])
                 #engine = os.path.join(self.home, self.engines['Saxon']['xquery']['path'])
-                converter.Saxon(language, engine).xquery(step['script'], self.tmp_file, self.tmp_file)
+                converter.Saxon(language, engine).xquery(step['script'], self.output_file, output_file)
             else:
-                converter.Call(step['language']).run(step['script'], self.tmp_file)
+                in_param = ''.join( ('-i ' + self.output_file) )
+                out_param = ''.join( ('-o ' + output_file) )
+                converter.Call(step['language']).run(step['script'], in_param, out_param)
+                #print step['language'], step['script'], parameter
+            
+            self.output_file = output_file
+            tmp_nr += 1
 
 
     def _output(self, write_output=True):
@@ -167,10 +187,12 @@ class Confpy(object):
         RETURN:
         * STDOUT: the conversion result represented by tmp-file
         """
-        output = functions.open_file(self.tmp_file)
+        #print 'The actual source of output: ' + self.output_file
+        output = functions.open_file(self.output_file)
         print output
         if write_output and self.output != 'None':
             self._create_output_file(output)
+        #print 'Save ' + self.output
 
 
     def _prepare(self, source):
@@ -205,6 +227,12 @@ class Confpy(object):
         RETURNS:
         * {DICT}: synchronised Dictionary with expanded script paths
         """
+        def _trial(key):
+            try:
+                obj[key] = self.scripts.config[scenario_name][key]
+            except:
+                obj[key] = False
+        
         #print convpy.tmpFile
         obj = {}
 
@@ -215,11 +243,9 @@ class Confpy(object):
             try:
                 #print convpy.scripts.config[scenario_name]
                 obj['script'] = os.path.join(self.scripts.path, self.scripts.config[scenario_name]['script'])
-                obj['type'] = self.scripts.config[scenario_name]['type']
-                try:
-                    obj['language'] = self.scripts.config[scenario_name]['language']
-                except:
-                    obj['language'] = False
+                _trial('type')
+                _trial('language')
+                _trial('output')
             except:
                 #print 'NICHT DRIN'
                 pass
@@ -236,22 +262,31 @@ class Confpy(object):
 
         ARGS:
         * self: The actual configured convPY Instance
-        * flow: the givern conversion-workflow which should to be done
-        
-        TO-DO:
-        * Not check the type but check if source is os.path.isdir()
-          or os.path.isfile()
-        * If os.path.isdir() create list of all files in dir with absolute path
+        * source: a source that may be a single file, a directory or a python list
+        * write_output: Flag to set the output-mode to True (create output-file) or False (don't create output-file)
         """
         #print type(source)
-        if isinstance(source, str) or isinstance(source, unicode):
-            self._work_the_flow(source)
-            self._output(write_output)
-        elif isinstance(source, list):
+        #print os.path.isdir(source)
+        #print os.path.isfile(source)
+
+        if isinstance(source, list):
+            #print ('List')
             for item in source:
                 self._work_the_flow(item)
                 self._output(write_output)
+        elif os.path.isdir(source):
+            #print ('DIR')
+            dir_files = functions.walk_dir(source)
+            for item in dir_files:
+                self._work_the_flow(item)
+                self._output(write_output)
+            #print dir_files
+        elif os.path.isfile(source) or isinstance(source, unicode):
+            #print ('File or URL-Resource')
+            self._work_the_flow(source)
+            self._output(write_output)
         else:
+            print ('Nor DIR nor File nor List')
             sys.exit(1)
 
         self._clean_tmp_dir()
