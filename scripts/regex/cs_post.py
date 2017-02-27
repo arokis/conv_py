@@ -1,13 +1,13 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import re, sys
+import re, sys, argparse
 
-def regex(tmp):
+def regex(in_file, out_file):
 
     #print tmp
 
-    with open(tmp, 'r') as out:
+    with open(in_file, 'r') as out:
         xml_data = out.read()
     
 
@@ -19,17 +19,16 @@ def regex(tmp):
     print(transform)
     
     
-    file = open(tmp,"w+") 
+    file = open(out_file,"w+") 
     file.write(transform) 
     file.close()
     
 
 if __name__ == '__main__':
     
-    if len(sys.argv) > 1:
-        tmp = sys.argv[1]
-    else:
-        tmp = os.path.join(conv_py_home, 'tmp/tmp.xml')
-    
-    regex(tmp)
+    parser = argparse.ArgumentParser(prog='cs_post', description='coptic scriptorium post processing.')
+    parser.add_argument('-i', '--input', help='defines input directory or file')
+    parser.add_argument('-o', '--output',  help="output")
+    cmd_args = parser.parse_args()
+    regex(cmd_args.input, cmd_args.output)
 
