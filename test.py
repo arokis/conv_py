@@ -38,7 +38,8 @@ data = """{
                     "desc"  : "RegEx Postprocessing to clean up the data",
                     "type"  : "regex",
                     "script": "scripts/regex/cs_post.py",
-                    "language"  : "python"
+                    "language"  : "python",
+                    "output" : ".xml"
                 }
             ]}"""
 
@@ -54,4 +55,6 @@ convpy.read_scenario(requested_scenario['steps'])
 u = requested_scenario['source']
 f = 'data/test_xml.xml'
 l = [f, 'data/2_test_xml.xml']
-convpy.convert(u, write_output=True)
+d = 'data/'
+convpy.convert(f, write_output=True)
+

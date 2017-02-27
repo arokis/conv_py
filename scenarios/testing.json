@@ -9,6 +9,7 @@
             "desc"  : "RegEx Postprocessing to clean up the data",
             "type"  : "regex",
             "script"    : "scripts/regex/cs_post.py",
-            "language": "python"
+            "language": "python",
+            "output" : ".xml"
         }]
 }
