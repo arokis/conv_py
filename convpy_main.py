@@ -64,7 +64,7 @@ def main():
     # prepare !
     convpy.read_scenario(scenario)
     # convert !
-    convpy.convert(source, False)
+    convpy.convert(source, write_output=False)
     # ... and finish !
 
 
