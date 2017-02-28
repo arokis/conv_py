@@ -1,0 +1,14 @@
+[
+    {
+        "mime-type"   : ["text/xml", "application/xml"],
+        "extensions"  : [".xml"]
+    },
+    {
+        "mime-type"   : ["text/xsl", "application/xslt"],
+        "extensions"  : [".xsl", ".xslt"]
+    },
+    {
+        "mime-type"   : ["application/xquery"],
+        "extensions"  : [ ".xq", ".xql", ".xqy", ".xquery" ]
+    }
+]
