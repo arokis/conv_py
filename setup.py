@@ -15,6 +15,7 @@ setup(
     ],
     keywords = 'xslt xsl xml saxon conversion converter xquery'
     # packages=find_packages(exclude=[]),
-    install_requires=[],
-    # pip install -e .[]
-    )
+    install_requires=[
+        'python-magic>=0.4.12'
+    ],    
+)
