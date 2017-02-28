@@ -70,6 +70,29 @@ def open_file(path):
         sys.exit(1)
 
 
+def pathify(homeify, *arg):
+    """
+    ...
+
+    ARGS:
+    * homeify   : ...
+    * *arg      : ...
+
+    RETURN:
+    * STR: ...
+    """
+    joined = ''.join(arg)
+    if homeify == True:
+        home = os.path.dirname(os.path.abspath(os.path.join(__file__ , os.path.pardir)))
+        #print 'homeify'
+        #print os.path.join(home, path)
+        return os.path.join(home, joined)
+    else:
+        #print 'relative'
+        #print joined
+        return os.path.abspath(joined)
+
+
 def read_json_file(file_path):
     """
     reads JSON from a file
@@ -92,10 +115,10 @@ def retrieve(path):
     * path: file-path or url which should be read in
     """
     try:
-        if path.startswith('http'):
-            return request(path)
-        elif os.path.exists(path) and os.path.isfile(path):
+        if os.path.exists(path) and os.path.isfile(path):
             return open_file(path)
+        else:
+            return request(path)
     except IOError:
         print ('[convPY:ERROR] Failed in reading input-data "' + path +'". Exit!')
         sys.exit(1)

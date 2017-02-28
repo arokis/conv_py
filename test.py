@@ -28,7 +28,27 @@ convpy = convPY.configure('config/config.json')
 
 #print convpy.engines.path
 
-
+data1 = """{
+            "source" : "http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw",
+            "steps" : [
+                {"scenario" : "cs_nlp"},
+                {
+                    "name"  : "cs_post-processing",
+                    "desc"  : "RegEx Postprocessing to clean up the data",
+                    "type"  : "regex",
+                    "script": "scripts/regex/cs_post.py",
+                    "language"  : "python",
+                    "output" : ".xml"
+                },
+                {
+                    "name"  : "cs_post-processing",
+                    "desc"  : "RegEx Postprocessing to clean up the data",
+                    "type"  : "regex",
+                    "script": "scripts/xslt/test.xquery",
+                    "language"  : "python",
+                    "output" : ".xml"
+                }
+            ]}"""
 data = """{
             "source" : "http://coptot.manuscriptroom.com/community/vmr/api/transcript/get/?docID=690003&pageID=0-400&joinParts=true&format=teiraw",
             "steps" : [
@@ -49,12 +69,13 @@ data = """{
 
 # loads the json-data 
 requested_scenario = json.loads(data)
-convpy.read_scenario(requested_scenario['steps'])
+scenario = requested_scenario['steps']
+#convpy.read_scenario(requested_scenario['steps'])
 #print convpy.scenario
-
+fu = 'http://bnjhbasdhb.de/bka'
 u = requested_scenario['source']
 f = 'data/test_xml.xml'
 l = [f, 'data/2_test_xml.xml']
 d = 'data/'
-convpy.convert(f, write_output=True)
+convpy.convert(source=f,scenario=scenario, write_output=True)
 

@@ -61,10 +61,8 @@ def main():
     # start convPY-Instance and configure session
     convpy = convPY.configure(config)
 
-    # prepare !
-    convpy.read_scenario(scenario)
     # convert !
-    convpy.convert(source, write_output=False)
+    convpy.convert(source=source,scenario=scenario, write_output=True)
     # ... and finish !
 
 
