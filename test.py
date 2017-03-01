@@ -24,7 +24,6 @@ print convpy.home
 print convpy.tmpFile
 print convpy.config
 """
-convpy = convPY.configure('config/config.json')
 
 #print convpy.engines.path
 
@@ -77,6 +76,13 @@ u = requested_scenario['source']
 f = 'data/test_xml.xml'
 l = [f, 'data/2_test_xml.xml']
 d = 'data/'
-print (convpy.home)
+convpy = convPY.Convpy('config/config.json')
+#print convPY.Convpy.__dict__
+
+#print convpy.main_config
+#print convpy.scripts
+#print convpy.engines
+#print convpy.__dict__
+#print convpy.scripts
 convpy.convert(source=f,scenario=scenario, write_output=True)
 
