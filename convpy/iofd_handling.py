@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 """
-convpy/functions.py
+convpy/iofd_handling.py
 *************
-Defines the base-functions like open or reading files etc.
+Defines the functions for IO- , File- and Directoryhandling
 """
 
 import json

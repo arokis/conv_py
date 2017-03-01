@@ -13,7 +13,8 @@ import sys
 import magic
 from shutil import rmtree
 
-import functions
+import working
+import iofd_handling as iofd
 import converter
 
 
@@ -47,7 +48,7 @@ class Config(object):
             ERROR   > Exception & exits with error-code 1
         """
         try:
-            return functions.read_json_file(file_path)
+            return iofd.read_json_file(file_path)
         except:
             print('[convPY:Error] Could not read config-file "' + file_path +'". Exit!')
             sys.exit(1)
@@ -69,14 +70,14 @@ class Confpy(object):
         self.main_config = config
         self.engines = engines
         self.scripts = scripts
-        self.tmp_file = functions.pathify(True, 'tmp/tmp.tmp')
+        self.tmp_file = iofd.pathify(True, 'tmp/tmp.tmp')
         self.tmp_dir = os.path.dirname(self.tmp_file)
         self.output = config.config['output-dir']
         self.output_file = ''
         self.scenario = False
         self.source = ''
 
-        functions.create_dir(self.tmp_dir)
+        iofd.create_dir(self.tmp_dir)
 
 
     def _create_output_file(self, content):
@@ -116,8 +117,8 @@ class Confpy(object):
 
             outfile_name = ''.join((source_name, '_cpy', source_extension))
 
-        functions.create_dir(self.output)
-        functions.create_file(os.path.join(self.output, outfile_name), content)
+        iofd.create_dir(self.output)
+        iofd.create_file(os.path.join(self.output, outfile_name), content)
 
 
     def _clean_tmp_dir(self):
@@ -154,7 +155,6 @@ class Confpy(object):
         """
         
         self.source = source
-        #print self.source
 
         self._prepare_source(self.source, self.tmp_file)
 
@@ -204,7 +204,7 @@ class Confpy(object):
         """
         #print 'The actual source of output: ' + self.output_file
         
-        output = functions.open_file(self.output_file)
+        output = iofd.open_file(self.output_file)
         
         print output
         
@@ -226,9 +226,9 @@ class Confpy(object):
         CREATS:
         * TEMPORARY FILE
         """
-        source = functions.retrieve(source)
+        source = iofd.retrieve(source)
         try:
-            functions.create_file(target, source)
+            iofd.create_file(target, source)
         except IOError:
             print ('[convPY:ERROR] Failed in creating temporary file "' + target +'". Exit!')
             sys.exit(1)
@@ -246,7 +246,7 @@ class Confpy(object):
         * {DICT}: synchronised Dictionary with expanded script paths
         """
         
-        def _scripts_param(scenario, key):
+        def scripts_param(scenario, key):
             try:
                 return self.scripts.config[scenario][key]
             except KeyError:
@@ -258,15 +258,15 @@ class Confpy(object):
             scenario_name = scenario_step['scenario']
             scripts_path = self.scripts.path
             tmp_path = self.tmp_dir
-            output_format = _scripts_param(scenario_name, 'output')
+            output_format = scripts_param(scenario_name, 'output')
             
             obj['name'] = scenario_name
-            obj['type'] = _scripts_param(scenario_name, 'type')
-            obj['language'] = _scripts_param(scenario_name, 'language')
+            obj['type'] = scripts_param(scenario_name, 'type')
+            obj['language'] = scripts_param(scenario_name, 'language')
             
-            script = _scripts_param(scenario_name, 'script')
+            script = scripts_param(scenario_name, 'script')
             obj['script'] = os.path.join(scripts_path, script)
-            obj['output'] =_scripts_param(scenario_name, 'output')
+            obj['output'] = scripts_param(scenario_name, 'output')
             
         else:
             #print 'USER DEFINED SCENARIO'
@@ -295,7 +295,7 @@ class Confpy(object):
                 self._output(write_output)
         elif os.path.isdir(source):
             #print ('DIR')
-            dir_files = functions.walk_dir(source)
+            dir_files = iofd.walk_dir(source)
             for item in dir_files:
                 self._work_the_flow(item)
                 self._output(write_output)
@@ -312,22 +312,4 @@ class Confpy(object):
         sys.exit(0)
 
 
-def configure(config_file):
-    """
-    configures ConvPY with homepath and reads engines and scipts configs
 
-    ARGS:
-    * config_file: path to config.json
-
-    RETURN:
-    {CONVPY OBJECT} that is configured with main-config, engines and scenario-scripts
-    """
-    config_path = functions.pathify(True, config_file)
-    main_config = Config(config_path)
-
-    scripts_config = functions.pathify(True, main_config.config['scripts']['path'], main_config.config['scripts']['config'])
-    engines_config = functions.pathify(True, main_config.config['engines']['path'], main_config.config['engines']['config'])
-
-    scripts = Config(scripts_config)
-    engines = Config(engines_config)
-    return Confpy(main_config, engines, scripts)
