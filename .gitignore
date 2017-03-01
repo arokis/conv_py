@@ -1,7 +1,9 @@
 .vscode/
+.DS_Store
 *.pyc
 *~
 *.swp
+/*.egg-info
 /tmp
 /result
-.DS_Store
+/dist/
