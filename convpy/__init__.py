@@ -9,5 +9,5 @@ initialises the main convPY-classes, APIs and functions
 """
 
 from apis import stdin_api, cmd_api
-from working import configure
-
+from configure import configure
+from iofd_handling import read_json_file

@@ -77,5 +77,6 @@ u = requested_scenario['source']
 f = 'data/test_xml.xml'
 l = [f, 'data/2_test_xml.xml']
 d = 'data/'
+print (convpy.home)
 convpy.convert(source=f,scenario=scenario, write_output=True)
 

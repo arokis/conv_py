@@ -4,7 +4,8 @@
 """
 convpy/conv.py
 *************
-Defines configuration-functions and the Classes "Config" and "Convpy".
+Defines the Class "Convpy".
+This is where the magic happens.
 """
 
 import datetime
@@ -13,7 +14,6 @@ import sys
 import magic
 from shutil import rmtree
 
-import working
 import iofd_handling as iofd
 import converter
 
@@ -21,41 +21,10 @@ import converter
 __author__ = "Uwe Sikora"
 __email__ = "arokis.u@googlemail.com"
 __date__ = "2017-02-25"
+__all__ = ['Convpy']
 
 
-class Config(object):
-    """
-    Config-Class:
-    Representing a config file and content
-
-    ARGS:
-    * config: Path to JSON config-file
-    """
-
-    def __init__(self, config):
-        self.path = os.path.dirname(config)
-        self.config = self._read(config)
-
-    def _read(self, file_path):
-        """
-        Config-Class non-public methode reading in a JSON config-file by its path
-
-        ARGS:
-        * file_path   : file path to JSON config
-
-        RETURN:
-            OK      > {DICT}: ...
-            ERROR   > Exception & exits with error-code 1
-        """
-        try:
-            return iofd.read_json_file(file_path)
-        except:
-            print('[convPY:Error] Could not read config-file "' + file_path +'". Exit!')
-            sys.exit(1)
-
-
-
-class Confpy(object):
+class Convpy(object):
     """
     Confpy
     Representing a ConvPY Session aka the scenario driven Conversion you want to run :-D
@@ -65,8 +34,12 @@ class Confpy(object):
     * engines: path to engines JSON config-file
     * scripts: path to scripts JSON config-file
     """
+    instance_amount = 0
+    home = os.path.abspath(os.path.join(__file__ , os.path.pardir))
+    
 
     def __init__(self, config, engines, scripts):
+        Convpy.instance_amount += 1
         self.main_config = config
         self.engines = engines
         self.scripts = scripts
@@ -251,7 +224,7 @@ class Confpy(object):
                 return self.scripts.config[scenario][key]
             except KeyError:
                 return False
-
+        
         obj = {}
         if scenario_step.get('scenario'):
             #print 'CONVPY SCENARIO'
@@ -285,7 +258,7 @@ class Confpy(object):
         * scenario: The given scenario which is going to be worked at
         * write_output: Flag to set the output-mode to True (create output-file) or False (don't create output-file)
         """
-
+        #print ('{} {}'.format(source, self.tmp_file))
         self.scenario = [self._scenarioise(step) for step in scenario]
 
         if isinstance(source, list):
@@ -307,9 +280,7 @@ class Confpy(object):
         else:
             print ('Nor DIR nor File nor List')
             sys.exit(1)
-
+        
         self._clean_tmp_dir()
         sys.exit(0)
-
-
 
