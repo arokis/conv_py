@@ -63,7 +63,7 @@ def main():
     #########################
 
     # start convPY-Instance and configure session
-    convpy = convPY.configure(config)
+    convpy = convPY.Convpy(config)
 
     # convert !
     convpy.convert(source=source, scenario=scenario['steps'], write_output=fileout)
