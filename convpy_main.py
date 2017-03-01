@@ -34,8 +34,10 @@ def main():
     #cmd_args = convPY.cmd_api(['-wf', 'scenarios/vmr2cs-nlp.json'])
 
     config = cmd_args.config
-    source = cmd_args.input
+    fileout = cmd_args.fileout
+    source = ''
     scenario = ''
+
 
     if cmd_args.stdin is True:
         json_data = convPY.stdin_api()
@@ -44,15 +46,17 @@ def main():
     else:
         # open scenario from file
         try:
-            flow = convPY.open_file(cmd_args.flow)
+            source = cmd_args.source
+            #flow = convPY.open_file(cmd_args.scenario)
+            scenario = convPY.read_json_file(cmd_args.scenario)
         except TypeError:
             print('[convPY:ERROR] Could not identify workflow! Exit!')
             sys.exit(1)
-        # loads the json-data
-        scenario = json.loads(flow)['steps']
+        
+        
 
     #print scenario
-
+    #print source
 
     #########################
     # ConvPYs Main-Workflow #
@@ -62,7 +66,7 @@ def main():
     convpy = convPY.configure(config)
 
     # convert !
-    convpy.convert(source=source,scenario=scenario, write_output=True)
+    convpy.convert(source=source, scenario=scenario['steps'], write_output=fileout)
     # ... and finish !
 
 
