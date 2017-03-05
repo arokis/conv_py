@@ -11,13 +11,11 @@ This is where the magic happens.
 import datetime
 import os
 import sys
-import magic
 from shutil import rmtree
 
 from configure import Config
 import iofd_handling as iofd
 import converter
-
 
 
 
@@ -63,7 +61,18 @@ class Convpy(object):
         self.engines = Config.read_config(engines_config)
 
         self.tmp_dir = os.path.dirname(Convpy.pathify(True, Convpy.tmp_file))
-        self.output = self.main_config['output-dir']
+        
+        output_params = self.main_config['output']
+        self.output_dir = output_params['dir']
+
+        if isinstance(output_params['save'], list):
+            #self.output_save = False
+            if 'file' in output_params['save']:
+                self.output_save = True
+            else: 
+                self.output_save = False
+        elif output_params['save'] == 'False':
+            self.output_save = False
 
 
     def _create_output_file(self, content):
@@ -82,27 +91,23 @@ class Convpy(object):
           the file beeing copyed
         * how to handle URL-Resources consitently?
         """
-        
-        mime = magic.from_buffer(content, mime=True)
         #source = self.source
         outfile_name = ''
-
+       
         if self.source.startswith('http'):
             outfile_name = ''.join(('http_resource_cpy.xml'))
         else:
-            source_file = os.path.splitext(os.path.basename(self.source))
-            #print source_file
-            source_name = source_file[0]
-            source_extension = Convpy.extension_from_mime(mime, source_file[1])
+            source_file_info = iofd.file_name_info(self.source)
+            source_name = source_file_info['name']
+            source_extension = source_file_info['extension']
             
-
             outfile_name = ''.join((source_name, '_cpy', source_extension))
 
-        iofd.create_dir(self.output)
-        iofd.create_file(os.path.join(self.output, outfile_name), content)
+        iofd.create_dir(self.output_dir)
+        iofd.create_file(os.path.join(self.output_dir, outfile_name), content)
 
 
-    def _clean_tmp_dir(self):
+    def clean_up(self, clean=True):
         """
         cleans all the temporary data incl. temporary directory
 
@@ -110,9 +115,10 @@ class Convpy(object):
         * self: The actual configured convPY Instance
         """
         try:
-            if self.tmp_dir != os.path.dirname(self.home):
+            if self.tmp_dir != os.path.dirname(self.home) and clean == True:
                 rmtree(self.tmp_dir)
-        except:
+            sys.exit(0)
+        except IOError:
             print ('[convPY:WARNING] Could not clean up "' + self.tmp_dir +'". Maybe you should clean it manually!')
             sys.exit(0)
 
@@ -141,14 +147,11 @@ class Convpy(object):
 
         self.output_file = self.tmp_file
         
-        #print self.scenario
+        
         tmp_nr = 0
         for step in self.scenario:
             outfile_name = str(tmp_nr)
-            output_file = os.path.join(self.tmp_dir, ''.join((outfile_name, '.tmp'))) 
-            
-            #script_MIME = magic.from_file(step['script'], mime=True) 
-            #print script_MIME
+            output_file = os.path.join(self.tmp_dir, ''.join((outfile_name, step['output']))) 
 
             if step['type'] == 'xslt':
                 language = self.engines['Saxon']['xslt']['language']
@@ -170,7 +173,7 @@ class Convpy(object):
             tmp_nr += 1
 
 
-    def _output(self, write_output=True):
+    def _output(self):
         """
         puts out the result on stdout and as output-file if spcified
 
@@ -187,15 +190,11 @@ class Convpy(object):
         
         output = iofd.open_file(self.output_file)
         
-        print output
+        print (output)
         
-        #mime = magic.from_file(self.output_file, mime=True) 
-        
-        if write_output and self.output != 'None':
+        if self.output_save:
             self._create_output_file(output)
         #print 'Save ' + self.output_file
-
-    
 
 
     def _scenarioise(self, scenario_step):
@@ -209,30 +208,33 @@ class Convpy(object):
         RETURNS:
         * {DICT}: synchronised Dictionary with expanded script paths
         """
-        
+        def get_param_from_scenario(obj, scenario, key):
+            try:
+                return obj[scenario][key]
+            except KeyError:
+                return False
+
         obj = {}
 
         if scenario_step.get('scenario'):
             #print 'CONVPY SCENARIO'
-            #tmp_path = self.tmp_dir
-        
             scenario_name = scenario_step['scenario']
             scripts_path = Convpy.pathify(True, self.main_config['scripts']['path'])
             
             obj['name'] = scenario_name
-            obj['type'] = Convpy.get_param_from_scenario(self.scripts, scenario_name, 'type')
-            obj['language'] = Convpy.get_param_from_scenario(self.scripts, scenario_name, 'language')
+            obj['type'] = get_param_from_scenario(self.scripts, scenario_name, 'type')
+            obj['language'] = get_param_from_scenario(self.scripts, scenario_name, 'language')
             
-            script = Convpy.get_param_from_scenario(self.scripts, scenario_name, 'script')
+            script = get_param_from_scenario(self.scripts, scenario_name, 'script')
             obj['script'] = os.path.join(scripts_path, script)
-            obj['output'] = Convpy.get_param_from_scenario(self.scripts, scenario_name, 'output-format')
+            obj['output'] = get_param_from_scenario(self.scripts, scenario_name, 'output-format')
         else:
             #print 'USER DEFINED SCENARIO'
             obj = scenario_step
         return obj
 
 
-    def convert(self, source, scenario, write_output=True):
+    def convert(self, source, scenario):
         """
         main conversion routine which creates Conversion-Instances, calls the Converter-Instances
         and ends ConvPY with sys.exit('0') if everything worked well
@@ -253,24 +255,22 @@ class Convpy(object):
             #print ('List')
             for item in source:
                 self._work_the_flow(item)
-                self._output(write_output)
+                self._output()
         elif os.path.isdir(source):
             #print ('DIR')
             dir_files = iofd.walk_dir(source)
             for item in dir_files:
                 self._work_the_flow(item)
-                self._output(write_output)
-            #print dir_files
+                self._output()
         elif os.path.isfile(source) or isinstance(source, unicode) or isinstance(source, str):
             #print ('File or URL-Resource')
             self._work_the_flow(source)
-            self._output(write_output)
+            self._output()
         else:
             print ('Nor DIR nor File nor List')
             sys.exit(1)
         
-        self._clean_tmp_dir()
-        sys.exit(0)
+        self.clean_up(clean=True)
         
     
     @classmethod
@@ -294,21 +294,6 @@ class Convpy(object):
             #print 'relative'
             return os.path.abspath(joined)
 
-
-    @staticmethod
-    def extension_from_mime(mime, default=''):
-        return {
-            'application/xml': '.xml',
-        }.get(mime, default)
-
-
-    @staticmethod
-    def get_param_from_scenario(obj, scenario, key):
-        try:
-            return obj[scenario][key]
-        except KeyError:
-            return False
-
     
     @staticmethod
     def prepare_source(source, target):
@@ -328,5 +313,3 @@ class Convpy(object):
         except IOError:
             print ('[convPY:ERROR] Failed in creating temporary file "' + target +'". Exit!')
             sys.exit(1)
-
-

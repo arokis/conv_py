@@ -51,6 +51,20 @@ def create_file(path, content, option='w+'):
         sys.exit(1)
 
 
+def file_name_info(file_path):
+    path = os.path.abspath(os.path.dirname(file_path)) 
+    file_base = os.path.basename(file_path) 
+    file_name = os.path.splitext(file_base)[0]
+    file_extension = os.path.splitext(file_base)[1]
+    
+    return{
+        'path' : path,
+        'base' : file_base,
+        'extension' : file_extension,
+        'name' : file_name  
+    }
+
+
 def open_file(path):
     """
     opens files and reads it in with params
@@ -68,29 +82,6 @@ def open_file(path):
     except IOError:
         print ('[convPY:ERROR] No such File "' + path + '"! Exit!')
         sys.exit(1)
-
-
-def pathify(homeify, *arg):
-    """
-    ...
-
-    ARGS:
-    * homeify   : ...
-    * *arg      : ...
-
-    RETURN:
-    * STR: ...
-    """
-    joined = ''.join(arg)
-    if homeify == True:
-        home = os.path.dirname(os.path.abspath(os.path.join(__file__ , os.path.pardir)))
-        #print 'homeify'
-        #print os.path.join(home, path)
-        return os.path.join(home, joined)
-    else:
-        #print 'relative'
-        #print joined
-        return os.path.abspath(joined)
 
 
 def read_json_file(file_path):
