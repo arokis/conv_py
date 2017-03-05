@@ -17,7 +17,7 @@ import iofd_handling as iofd
 __author__ = "Uwe Sikora"
 __email__ = "arokis.u@googlemail.com"
 __date__ = "2017-02-25"
-__all__ = ['Config', 'configure']
+__all__ = ['Config']
 
 
 class Config(object):
