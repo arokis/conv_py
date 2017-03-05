@@ -65,15 +65,6 @@ class Convpy(object):
         output_params = self.main_config['output']
         self.output_dir = output_params['dir']
 
-        if isinstance(output_params['save'], list):
-            #self.output_save = False
-            if 'file' in output_params['save']:
-                self.output_save = True
-            else: 
-                self.output_save = False
-        elif output_params['save'] == 'False':
-            self.output_save = False
-
 
     def _create_output_file(self, content):
         """
@@ -192,7 +183,7 @@ class Convpy(object):
         
         print (output)
         
-        if self.output_save:
+        if self.save_output:
             self._create_output_file(output)
         #print 'Save ' + self.output_file
 
@@ -234,7 +225,7 @@ class Convpy(object):
         return obj
 
 
-    def convert(self, source, scenario):
+    def convert(self, source, scenario, save_output=True):
         """
         main conversion routine which creates Conversion-Instances, calls the Converter-Instances
         and ends ConvPY with sys.exit('0') if everything worked well
@@ -243,12 +234,12 @@ class Convpy(object):
         * self: The actual configured convPY Instance
         * source: a source that may be a single file, a directory or a python list
         * scenario: The given scenario which is going to be worked at
-        * write_output: Flag to set the output-mode to True (create output-file) or False (don't create output-file)
+        * save_output: Flag to set the output-mode to True (create output-file) or False (don't create output-file)
         """
         #print ('{} {}'.format(source, self.tmp_file))
         
         #print scenario
-        
+        self.save_output = save_output
         self.scenario = [self._scenarioise(step) for step in scenario]
 
         if isinstance(source, list):

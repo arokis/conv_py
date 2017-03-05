@@ -2,8 +2,7 @@
     "main"  : "python convpy.py",
     "log"   : "log/process.log",   
     "output": {
-        "dir" : "result/",
-        "save" : ["files"]
+        "dir" : "result/"
         },
     "engines"   : {
         "path"  : "engines/",
