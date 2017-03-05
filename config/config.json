@@ -1,7 +1,10 @@
 {
     "main"  : "python convpy.py",
     "log"   : "log/process.log",   
-    "output-dir": "result/",
+    "output": {
+        "dir" : "result/",
+        "save" : ["files"]
+        },
     "engines"   : {
         "path"  : "engines/",
         "config": "engines.json"

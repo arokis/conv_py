@@ -84,5 +84,5 @@ convpy = convPY.Convpy('config/config.json')
 #print convpy.engines
 #print convpy.__dict__
 #print convpy.scripts
-convpy.convert(source=f,scenario=scenario, write_output=True)
+convpy.convert(source=f,scenario=scenario)
 

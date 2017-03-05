@@ -8,8 +8,8 @@
     "cs_plain-text" : {
         "desc"  : "Conversion from VMR to Plain-Text",
         "type"  : "xslt",
-        "script": "xslt/strip_space.xsl",
-        "output-format": ".xml"
+        "script": "xslt/cs_plain-text.xsl",
+        "output-format": ".txt"
     },
     "strip-space" : {
         "desc"  : "Strips space from xml-data",
