@@ -42,7 +42,6 @@ class Convpy(object):
     tmp_file = 'tmp/tmp.tmp'
 
     def __init__(self, config):
-        
         self.configure(config)
         Convpy.instance_amount += 1
         iofd.create_dir(self.tmp_dir)
@@ -111,7 +110,7 @@ class Convpy(object):
         * self: The actual configured convPY Instance
         """
         try:
-            if self.tmp_dir != os.path.dirname(os.path.abspath(os.path.join(__file__, os.path.pardir))):
+            if self.tmp_dir != os.path.dirname(self.home):
                 rmtree(self.tmp_dir)
         except:
             print ('[convPY:WARNING] Could not clean up "' + self.tmp_dir +'". Maybe you should clean it manually!')
@@ -297,7 +296,7 @@ class Convpy(object):
 
 
     @staticmethod
-    def extension_from_mime(mime, default='.xml'):
+    def extension_from_mime(mime, default=''):
         return {
             'application/xml': '.xml',
         }.get(mime, default)
