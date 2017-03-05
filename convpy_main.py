@@ -66,7 +66,7 @@ def main():
     convpy = convPY.Convpy(config)
 
     # convert !
-    convpy.convert(source=source, scenario=scenario['steps'], write_output=fileout)
+    convpy.convert(source=source, scenario=scenario['steps'])
     # ... and finish !
 
 
